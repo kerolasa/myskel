@@ -2,7 +2,7 @@
 
 function myskel()
 {
-	echo "This is myskel git version"
+	echo "This is myskel git __GIT_DESCRIBE"
 }
 
 export FULLNAME="Sami Kerola"
