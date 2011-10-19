@@ -1,0 +1,23 @@
+xterm_color*background: Black
+xterm_color*BorderColor: Grey
+xterm_color*cursorColor: Orchid
+xterm_color*foreground: Grey
+xterm_color*reverseWrap: true
+xterm_color*RightScrollBar: true
+xterm_color*SaveLines: 1024
+xterm_color*scrollBar: true
+xterm_color*scrollKey: on
+xterm_color*scrollTtyOutput: off
+xterm_color*VisualBell: true
+
+xterm*background: Black
+xterm*BorderColor: Grey
+xterm*cursorColor: Orchid
+xterm*foreground: Grey
+xterm*reverseWrap: true
+xterm*RightScrollBar: true
+xterm*SaveLines: 1024
+xterm*scrollBar: true
+xterm*scrollKey: on
+xterm*scrollTtyOutput: off
+xterm*VisualBell: true

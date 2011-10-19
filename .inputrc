@@ -1,0 +1,15 @@
+# $HOME/.inputrc
+#
+# Latin charset
+set meta-flag			on
+set convert-meta		off
+set output-meta			on
+
+# Disable beeping
+set bell-style			visible
+
+# Readline completion.
+set expand-tilde		on
+set mark-directories		on
+set show-all-if-ambiguous	on
+set visible-stats		on

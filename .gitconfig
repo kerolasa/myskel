@@ -1,0 +1,25 @@
+[user]
+	name = Sami Kerola
+	email = kerolasa@iki.fi
+
+[format]
+	Organization = TomTom
+	subjectprefix = PATCH
+	suffix = .txt
+	numbered = auto
+
+[sendemail]
+	smtpserver = /usr/bin/msmtp
+	chainreplyto = false
+	cc = kerolasa@iki.fi
+
+[alias]
+	co = checkout
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+
+[color]
+	ui = true
+
+[core]
+	editor = joe
