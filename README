@@ -1,0 +1,23 @@
+This git contains various home directory setting files.
+
+Only one who is supposed to use the package as-is is Sami Kerola. Everyone
+else should at least change .gitconfig and .bashrc files, which means you
+probably should fork the whole project.
+
+Usage of the package is intented to be followin;
+
+1. Get the git clone.
+2. Personalize.
+3. Use make to create a myskel.tgz
+4. Copy the tar ball to your home directory & extract.
+   4.1. In the case of multiple servers repeat the extract procedure.
+
+Warning: The tar extract can overwrite files. Use tar --backup option if you
+are not sure whether you should save or not the old file.
+
+
+Copyright (C) 2010 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later
+<http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.

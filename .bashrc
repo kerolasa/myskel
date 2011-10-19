@@ -1,5 +1,4 @@
 #!/bin/sh
-# Sami Kerola's ${HOME}/.bashrc
 
 function myskel()
 {
