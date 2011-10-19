@@ -4,7 +4,7 @@ Only one who is supposed to use the package as-is is Sami Kerola. Everyone
 else should at least change .gitconfig and .bashrc files, which means you
 probably should fork the whole project.
 
-Usage of the package is intented to be followin;
+Usage of the package is intended to be following;
 
 1. Get the git clone.
 2. Personalize.
