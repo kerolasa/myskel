@@ -6,13 +6,17 @@ function myskel()
 }
 
 export FULLNAME="Sami Kerola"
+export NAME=$FULLNAME
+export EMAIL='kerolasa@iki.fi'
 
 #export LD_LIBRARY_PATH=
 #export LD_LIBRARY_PATH_64=
 export LANG=C
 export LC_ALL=C
 
+export BROWSER=firefox
 export EDITOR=vi
+export GZIP='-9'
 export FCEDIT=${EDITOR}
 export VISUAL=${EDITOR}
 export HISTCONTROL=ignoreboth
