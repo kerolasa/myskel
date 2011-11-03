@@ -1,4 +1,9 @@
-FILE_LIST = find . -mindepth 1 -name .git -prune -o -name Makefile -prune -o -name README -prune -o -type f -print
+FILE_LIST = find . -mindepth 1 -name .git -prune \
+			    -o -name Makefile -prune \
+			    -o -name README -prune \
+			    -o -name .gitignore -prune \
+			    -o -type f -print
+
 GIT_DESC = git describe
 
 tarfile: clean
