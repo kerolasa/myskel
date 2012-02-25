@@ -1,0 +1,25 @@
+ulimit -c unlimited
+export GNULIB_TOOL=/home/src/gnulib/gnulib-tool
+export GNULIB_SRCDIR=/home/src/gnulib
+export CC=gcc
+export CXX=g++
+export CFLAGS="-O3 -g -ggdb -Wall -Wextra -pedantic"
+
+case "$1" in
+	clang)
+		export CC=clang
+		export CXX=clang++
+		export CFLAGS="-O0 -g -ggdb -Wall -Wextra -pedantic -fcatch-undefined-behavior"
+		;;
+	coverage)
+		export CFLAGS="-O0 -g -ggdb -fprofile-arcs -ftest-coverage"
+		;;
+	wall)
+		export CFLAGS="-O -g -ggdb -Wall -Wextra -pedantic -Wstrict-overflow -Wformat -Wswitch-default -Wswitch-enum -Wsync-nand -Wredundant-decls -Wuninitialized -fstack-protector --param=ssp-buffer-size=4 -Wformat-security -Werror=format-security"
+		;;
+	profiling)
+		export CFLAGS="-O0 -g -ggdb -pg"
+		;;
+esac
+
+export CXXFLAGS=${CFLAGS}
