@@ -39,7 +39,7 @@ export dotglob=on
 
 unset LS_COLORS
 
-# Prompt. TomTom specif if stuff; you will not apply else where.
+# TomTom specific prompt, which does not apply anywhere else
 if [ -f /etc/friendlyname ]; then
 	export FRIENDLYNAME=$(cat /etc/friendlyname)
 	export PS1="\[\033]0;${FRIENDLYNAME}\007\]\u@${FRIENDLYNAME} \w "
