@@ -13,4 +13,5 @@ tarfile: clean
 	@echo "Remember to git reset myskel version number in .bashrc"
 
 clean:
-	rm -f myskel.tgz
+	git clean -xdf
+	git reset --hard
