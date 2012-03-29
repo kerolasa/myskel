@@ -44,11 +44,11 @@ unset LS_COLORS
 if [ -f /etc/friendlyname ]; then
 	export FRIENDLYNAME=$(cat /etc/friendlyname)
 	export PS1="\[\033]0;${FRIENDLYNAME}\007\]\u@${FRIENDLYNAME} \w "
-elif [ -f /etc/sysconfig/friendly-name ]; then
+elif [ -f /etc/sysconfig/friendly-name ] && [ -t 1 ]; then
 	echo "please run ln /etc/sysconfig/friendly-name /etc/friendlyname"
 	export PS1="\[\033]0;\h\007\]\u@\h \w "
 else
-	if [ ! -f /etc/puppet/puppet.conf ]; then
+	if [ ! -f /etc/puppet/puppet.conf ] && [ -t 1 ]; then
 		echo "no friendly name"
 	fi
 	export PS1="\[\033]0;\h\007\]\u@\h \w "
