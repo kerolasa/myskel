@@ -28,7 +28,11 @@ msg() {
 }
 
 usage() {
-	echo "Usage: ${0} [-switches] [parameters]"
+	echo "Usage:"
+	echo " ${0} [-hV] [argument ...]"
+	echo ""
+	echo " -h   display this help and exit"
+	echo " -V   output version information and exit"
 	exit ${1}
 }
 
@@ -38,8 +42,9 @@ usage() {
 #	usage 1
 #fi
 #MANDATORYB=0
-#while getopts a:b? OPTIONS; do
-#	case ${OPTIONS} in
+#while getopts a:bhV OPTIONS; do
+while getopts hV OPTIONS; do
+	case ${OPTIONS} in
 #		a)
 #			# Notice that colon in getopts line
 #			# defines that the option has argument.
@@ -49,14 +54,23 @@ usage() {
 #			msg "-b"
 #			MANDATORYB=1
 #			;;
-#		\?)
-#			usage 0
-#			;;
-#		*)
-#			usage 1
-#			;;
-#	esac
-#done
+		h)
+			usage 0
+			;;
+		V)
+			# With subversion
+			#svn propset svn:keywords Revision generic.sh
+			#msg '$Revision:$'
+			# When git, use post commit hook, or
+			# simply maintain a number
+			msg '0.1'
+			exit 0
+			;;
+		*)
+			usage 1
+			;;
+	esac
+done
 #shift $((OPTIND-1))
 #if [ "x0" = "x${MANDATORYB}" ]; then
 #	msg "mandatory argument is missing."
