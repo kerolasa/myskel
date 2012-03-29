@@ -15,6 +15,7 @@ set -e # exit on errors
 # trap ERR is bashism, do not change shebang!
 trap 'echo "${SCRIPT_INVOCATION_SHORT_NAME}: exit on error"; exit 1' ERR
 set -u # disallow usage of unset variables
+set -o pipefail	# make pipe writer failure to cause exit on error
 RETVAL=0
 
 # Write functions to this section.
