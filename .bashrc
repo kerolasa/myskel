@@ -3,6 +3,7 @@
 function myskel()
 {
 	echo "This is myskel git __GIT_DESCRIBE"
+	echo "See https://github.com/kerolasa/myskel for latest version"
 }
 
 export FULLNAME="Sami Kerola"
