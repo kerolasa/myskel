@@ -6,10 +6,14 @@ set convert-meta		off
 set output-meta			on
 
 # Disable beeping
-set bell-style			visible
+set bell-style			none
 
 # Readline completion.
 set expand-tilde		on
 set mark-directories		on
 set show-all-if-ambiguous	on
 set visible-stats		on
+
+# History completion.
+"\e[A": history-search-backward
+"\e[B": history-search-forward
