@@ -43,15 +43,17 @@ unset LS_COLORS
 # TomTom specific prompt, which does not apply anywhere else
 if [ -f /etc/friendlyname ]; then
 	export FRIENDLYNAME=$(cat /etc/friendlyname)
-	export PS1="\[\033]0;${FRIENDLYNAME}\007\]\u@${FRIENDLYNAME} \w "
-elif [ -f /etc/sysconfig/friendly-name ] && [ -t 1 ]; then
-	echo "please run ln /etc/sysconfig/friendly-name /etc/friendlyname"
-	export PS1="\[\033]0;\h\007\]\u@\h \w "
 else
 	if [ ! -f /etc/puppet/puppet.conf ] && [ -t 1 ]; then
 		echo "no friendly name"
 	fi
-	export PS1="\[\033]0;\h\007\]\u@\h \w "
+	export FRIENDLYNAME=$(hostname -s)
+fi
+
+if [ "x${TERM}" = "xxterm" ]; then
+	export PS1="\[\033]0;${FRIENDLYNAME}\007\]\u@${FRIENDLYNAME} \w "
+else
+	export PS1="\u@${FRIENDLYNAME} \w "
 fi
 
 # The `complete -r' will disable /etc/bash_completion
