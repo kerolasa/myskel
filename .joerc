@@ -96,7 +96,7 @@
 
  -csmode	^KF after a pervious search does a ^L instead
 
--backpath /home/sake/tmp
+-backpath xxxHOMExxx/tmp
 		Directory to store backup files (one space between
 		'backpath' and the 'path', no trailing spaces or comments
 		after the path).
