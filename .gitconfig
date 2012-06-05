@@ -17,6 +17,7 @@
 	co = checkout
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	weekly = !sh -c 'git checkout $(date +%Ywk%W)'
 
 [color]
 	ui = true
