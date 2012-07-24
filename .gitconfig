@@ -8,6 +8,9 @@
 	suffix = .txt
 	numbered = auto
 
+[commit]
+	template = ~/.gittemplate
+
 [sendemail]
 	smtpserver = /usr/bin/msmtp
 	chainreplyto = false
