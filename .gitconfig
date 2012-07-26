@@ -3,13 +3,16 @@
 	email = kerolasa@iki.fi
 
 [format]
-	Organization = TomTom
+	headers = "Organization: TomTom International B.V.\n"
 	subjectprefix = PATCH
 	suffix = .txt
 	numbered = auto
 
 [commit]
 	template = ~/.gittemplate
+
+[apply]
+	whitespace = warn
 
 [sendemail]
 	smtpserver = /usr/bin/msmtp
