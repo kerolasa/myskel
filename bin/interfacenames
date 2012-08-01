@@ -2,12 +2,14 @@
 #
 # Print DNS names of local interfaces.
 #
-# Sami Kerola
+# Sami Kerola <kerolasa@iki.fi>
 
-SCRIPT_INVOCATION_SHORT_NAME=`basename ${0}`
+SCRIPT_INVOCATION_SHORT_NAME=$(basename ${0})
 set -e
 trap 'echo "${SCRIPT_INVOCATION_SHORT_NAME}: exit on error"; exit 1' ERR
 set -u
+
+PATH='/bin:/usr/bin:/sbin:/usr/sbin'
 
 for I in $(ifconfig -a | awk '{if ($1 == "inet"){split($2,a,":"); print a[2]}}'); do
 	printf "${I}\t"
