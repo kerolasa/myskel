@@ -11,7 +11,18 @@ set -u
 
 PATH='/bin:/usr/bin:/sbin:/usr/sbin'
 
-for I in $(ifconfig -a | awk '{if ($1 == "inet"){split($2,a,":"); print a[2]}}'); do
+for I in $(ifconfig -a | 
+	awk '{
+		if ($1 == "inet") {
+			split($2, a, ":")
+			if (a[2]) {
+				print a[2]
+			} else {
+				print $2
+			}
+		}
+	}'
+); do
 	printf "${I}\t"
 	host ${I} | awk '{print $5}'
 done
