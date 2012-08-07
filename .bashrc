@@ -33,7 +33,7 @@ export LOGNAME=${USER}
 # Solaris cluster man
 #export MANPATH=${MANPATH}:/usr/cluster/man
 export PAGER=less
-export PATH=${HOME}/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/java/jdk/bin
+export PATH=${HOME}/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/java/jdk/bin:/usr/kerberos/bin:/usr/kerberos/sbin
 export TMPDIR=/tmp
 export cdspell=on
 export dotglob=on
