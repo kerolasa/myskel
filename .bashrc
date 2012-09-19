@@ -21,6 +21,7 @@ export GZIP='-9'
 export FCEDIT=${EDITOR}
 export VISUAL=${EDITOR}
 export HISTCONTROL=ignoreboth
+export USER=$(id -un)
 export HISTFILE=${HOME}/.histories/${USER}@${HOSTNAME}
 if [ ! -d ${HOME}/.histories ]; then
 	mkdir ${HOME}/.histories
@@ -40,20 +41,10 @@ export dotglob=on
 
 unset LS_COLORS
 
-# TomTom specific prompt, which does not apply anywhere else
-if [ -f /etc/friendlyname ]; then
-	export FRIENDLYNAME=$(cat /etc/friendlyname)
-else
-	if [ ! -f /etc/puppet/puppet.conf ] && [ -t 1 ]; then
-		echo "no friendly name"
-	fi
-	export FRIENDLYNAME=$(hostname -s)
-fi
-
 if [ "x${TERM}" = "xxterm" ]; then
-	export PS1="\[\033]0;${FRIENDLYNAME}\007\]\u@${FRIENDLYNAME} \w "
+	export PS1="\[\033]0;\h\007\]\u@\h \w "
 else
-	export PS1="\u@${FRIENDLYNAME} \w "
+	export PS1="\u@\h \w "
 fi
 
 # The `complete -r' will disable /etc/bash_completion
