@@ -59,7 +59,7 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias which="type -path"
 alias rpmarch='rpm -q --qf "%{n}-%{v}-%{r}.%{arch}\n"'
-alias rpmspecdate='date +"* %a %b %d ${FULLNAME} <${EMAIL}>"'
+alias rpmspecdate='date +"* %a %b %d %Y  ${FULLNAME} <${EMAIL}>"'
 shopt -s cdspell
 shopt -s checkhash
 shopt -s checkwinsize
