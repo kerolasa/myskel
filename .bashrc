@@ -80,5 +80,6 @@ if [ -t 1 ]; then
 fi
 
 umask 022
+ulimit -c unlimited
 
 # EOF
