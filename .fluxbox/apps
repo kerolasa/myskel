@@ -4,3 +4,7 @@
 [end]
 [app] (name=xterm) (class=XTerm)
 [end]
+[app] (class=Pidgin)
+  [Workspace] {5}
+  [FocusNewWindow] {no}
+[end]
