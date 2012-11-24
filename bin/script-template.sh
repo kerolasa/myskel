@@ -10,7 +10,7 @@
 #exec > /dev/null 2>&1
 
 # Default settings, do not touch.
-SCRIPT_INVOCATION_SHORT_NAME=$(basename ${0})
+SCRIPT_INVOCATION_SHORT_NAME=${0##*/}
 set -e # exit on errors
 # trap ERR is bashism, do not change shebang!
 trap 'echo "${SCRIPT_INVOCATION_SHORT_NAME}: exit on error"; exit 1' ERR
