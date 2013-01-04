@@ -2,17 +2,18 @@
 #
 # One line description.
 #
-# Your Name <your.name@tomtom.com>
+# Your Name <your.name@example.com>
 
 # Default settings, do not touch.
+# The trap ERR and pipefail are bashisms, do not change shebang.
 SCRIPT_INVOCATION_SHORT_NAME=$(basename ${0})
-set -e          # exit on errors
+set -e		# exit on errors
 trap 'echo "${SCRIPT_INVOCATION_SHORT_NAME}: exit on error"; exit 1' ERR
-set -u          # disallow usage of unset variables
-set -o pipefail # make pipe writer failure to cause exit on error
+set -u		# disallow usage of unset variables
+set -o pipefail	# make pipe writer failure to cause exit on error
 
-# Begin http://vos/display/OPS/howto+write+cronjobs
-# Report errors by email only if shell is not interactive.
+# Begin <do not touch>
+# Report errors by email only when shell is not interactive.
 if [ -t 1 ]; then
 	# Terminal exists, user is running script manually.  Do
 	# not initiate error reporting.
@@ -22,20 +23,19 @@ else
 	exec > ${OUTPUTFILE} 2>&1
 	set -x
 	MAILTO="cron-errors@example.com"
-	CRONJOBLOGDIR="/var/log/cronjob_outputs"
+	CRONJOBLOGDIR="/tmp/${SCRIPT_INVOCATION_SHORT_NAME}"
 	SERVER=$(hostname -s)
 	TIMESTAMP=$(date +%s)
-	trap "  cat ${OUTPUTFILE} |
+	trap "	cat ${OUTPUTFILE} |
 			mail -s \"${SERVER}: ${SCRIPT_INVOCATION_SHORT_NAME} failed\" ${MAILTO}" ERR
-	trap "  if [ ! -d ${CRONJOBLOGDIR} ]; then
-			mkdir ${CRONJOBLOGDIR}
+	trap "	if [ ! -d ${CRONJOBLOGDIR} ]; then
+			mkdir -p ${CRONJOBLOGDIR}
 		fi
 	mv ${OUTPUTFILE} ${CRONJOBLOGDIR}/${SCRIPT_INVOCATION_SHORT_NAME}.${TIMESTAMP}" 0
 	find ${CRONJOBLOGDIR} -name "${SCRIPT_INVOCATION_SHORT_NAME}.*" \
-		-type f -mtime +7 |
-		xargs rm -f
+		-type f -mtime +7 -delete
 fi
-# End http://vos/display/OPS/howto+write+cronjobs
+# End <do not touch>
 
 # WRITE YOUR SCRIPT HERE
 

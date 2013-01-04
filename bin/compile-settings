@@ -9,7 +9,7 @@ case "$1" in
 	clang)
 		export CC=clang
 		export CXX=clang++
-		export CFLAGS="-O0 -g -ggdb -Wall -Wextra -pedantic -fcatch-undefined-behavior"
+		export CFLAGS="-O0 -g -ggdb -Wall -Wextra -pedantic" # -fcatch-undefined-behavior"
 		;;
 	coverage)
 		export CFLAGS="-O0 -g -ggdb -fprofile-arcs -ftest-coverage"
@@ -18,15 +18,26 @@ case "$1" in
 		export CFLAGS="--param=ssp-buffer-size=4 -O -Wall -Werror=format-security -Werror=sequence-point -Wextra -Wformat -Wformat-security -Wmissing-parameter-type -Wno-missing-field-initializers -Wredundant-decls -Wsign-compare -Wstrict-overflow -Wswitch-default -Wswitch-enum -Wsync-nand -Wtype-limits -Wuninitialized -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused-parameter -Wunused-result -fno-common -fstack-protector -g -ggdb -pedantic -D_FORTIFY_SOURCE=2"
 		;;
 	wall2)
-		export CFLAGS="-Wall -W -Wformat-y2k -Wformat-security -Winit-self -Wmissing-include-dirs -Wunused -Wunknown-pragmas -Wstrict-aliasing -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wwrite-strings -Wmissing-declarations -Wmissing-noreturn -Wpacked -Winvalid-pch -Wvolatile-register-var -Wdisabled-optimization -Woverlength-strings -Wbuiltin-macro-redefined -Wmudflap -Wpacked-bitfield-compat -Wsync-nand -Wattributes -Wcoverage-mismatch -Wabi -Wcpp -Wdeprecated -Wdeprecated-declarations -Wdiv-by-zero -Wendif-labels -Wextra -Wformat-contains-nul -Wformat-extra-args -Wformat-zero-length -Wformat=2 -Wmultichar -Wnormalized=nfc -Woverflow -Wpointer-to-int-cast -Wpragmas -Wsuggest-attribute=noreturn -Wtrampolines -Wno-sign-compare -Wno-unused-parameter -Wsuggest-attribute=noreturn -Wno-format-nonliteral -Wno-logical-op -fdiagnostics-show-option -funit-at-a-time"
+		export CFLAGS="-Wabi -Wall -Wattributes -Wbad-function-cast -Wbuiltin-macro-redefined -Wcast-align -Wcoverage-mismatch -Wcpp -Wdeprecated -Wdeprecated-declarations -Wdisabled-optimization -Wdiv-by-zero -Wendif-labels -Wextra -Wformat-contains-nul -Wformat-extra-args -Wformat-security -Wformat-y2k -Wformat-zero-length -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-declarations -Wmissing-include-dirs -Wmissing-noreturn -Wmudflap -Wmultichar -Wno-format-nonliteral -Wno-logical-op -Wno-sign-compare -Wno-unused-parameter -Wnormalized=nfc -Woverflow -Woverlength-strings -Wpacked -Wpacked-bitfield-compat -Wpointer-arith -Wpointer-to-int-cast -Wpragmas -Wshadow -Wstrict-aliasing -Wsuggest-attribute=noreturn -Wsync-nand -Wtrampolines -Wunknown-pragmas -Wunused -Wunused-local-typedefs -Wvolatile-register-var -Wwrite-strings -fdiagnostics-show-option -funit-at-a-time"
 		;;
-	profiling)
+	profile)
 		export CFLAGS="-O0 -g -ggdb -pg"
 		;;
 	smatch)
 		export CC=/home/src/smatch/cgcc
 		export CHECK='/home/src/smatch/smatch --full-path'
 		export CFLAGS=''
+		;;
+	perform)
+		export CFLAGS="-O3 -Os -Ofast"
+		;;
+	smatch)
+		export CFLAGS="-Wsparse-all"
+		export CHECK=smatch
+		export CC=cgcc
+		;;
+	*)
+		echo "no idea"
 		;;
 esac
 

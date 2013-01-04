@@ -4,10 +4,40 @@
 #
 # Sami Kerola <kerolasa@iki.fi>
 
-SCRIPT_INVOCATION_SHORT_NAME=$(basename ${0})
+# Uncomment if you need to debug.
+#set -x
+
+SCRIPT_INVOCATION_SHORT_NAME=${0##*/}
 set -e
 trap 'echo "${SCRIPT_INVOCATION_SHORT_NAME}: exit on error"; exit 1' ERR
 set -u
+set -o pipefail
+
+msg() {
+	echo "${SCRIPT_INVOCATION_SHORT_NAME}: ${@}"
+}
+
+usage() {
+	echo "Usage:"
+	echo " ${0} [-h]"
+	echo ""
+	echo " -h   display this help and exit"
+	exit ${1}
+}
+
+while getopts h OPTIONS; do
+	case ${OPTIONS} in
+		h)
+			usage 0
+			;;
+		*)
+			usage 1
+			;;
+	esac
+done
+if [ ${#} -ne 0 ]; then
+	usage 1
+fi
 
 PATH='/bin:/usr/bin:/sbin:/usr/sbin'
 
