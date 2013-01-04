@@ -2,7 +2,7 @@
 #
 # One line description.
 #
-# Sami Kerola <sami.kerola@tomtom.com>
+# Sami Kerola <kerolasa@iki.fi>
 
 # Uncomment if you need to debug.
 #set -x
@@ -11,15 +11,13 @@
 
 # Default settings, do not touch.
 SCRIPT_INVOCATION_SHORT_NAME=${0##*/}
-set -e # exit on errors
+set -e		# exit on errors
 # trap ERR is bashism, do not change shebang!
 trap 'echo "${SCRIPT_INVOCATION_SHORT_NAME}: exit on error"; exit 1' ERR
-set -u # disallow usage of unset variables
+set -u		# disallow usage of unset variables
 set -o pipefail	# make pipe writer failure to cause exit on error
 RETVAL=0
 
-# Write functions to this section.
-#
 # Use this function when you want to inform user about something.
 # If you don't want to get script name in front of the message,
 # which would be a bit strange, use normal echo.
@@ -36,18 +34,11 @@ usage() {
 	exit ${1}
 }
 
-# Example getopts.
-# Make sure there is at least one argument.
-#if [ ${#} -eq 0 ]; then
-#	usage 1
-#fi
 #MANDATORYB=0
 #while getopts a:bhV OPTIONS; do
 while getopts hV OPTIONS; do
 	case ${OPTIONS} in
 #		a)
-#			# Notice that colon in getopts line
-#			# defines that the option has argument.
 #			msg "-a ${OPTARG}"
 #			;;
 #		b)
@@ -72,6 +63,10 @@ while getopts hV OPTIONS; do
 	esac
 done
 #shift $((OPTIND-1))
+# Make sure there is at least one argument.
+#if [ ${#} -eq 0 ]; then
+#	usage 1
+#fi
 #if [ "x0" = "x${MANDATORYB}" ]; then
 #	msg "mandatory argument is missing."
 #	usage 1
