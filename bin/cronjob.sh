@@ -19,7 +19,7 @@ if [ -t 1 ]; then
 	# not initiate error reporting.
 	trap 'echo "${0}: exit on error"; exit 1' ERR
 else
-	OUTPUTFILE=$(mktemp /tmp/${JOB_NAME}/${JOB_NAME}.XXXXXX)
+	OUTPUTFILE=$(mktemp /tmp/${JOB_NAME}.XXXXXX)
 	exec > ${OUTPUTFILE} 2>&1
 	set -x
 	MAILTO="cron-errors@example.com"
