@@ -3,7 +3,7 @@
 	email = kerolasa@iki.fi
 
 [format]
-	headers = "Organization: TomTom International B.V.\n"
+	headers = "Organization: Lastminute.com\n"
 	subjectprefix = PATCH
 	suffix = .txt
 	numbered = auto
@@ -31,3 +31,5 @@
 [core]
 	editor = joe
 	whitespace = trailing-space,space-before-tab,indent-with-non-tab
+[push]
+	default = matching
