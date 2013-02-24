@@ -10,6 +10,40 @@ export FULLNAME="Sami Kerola"
 export NAME=$FULLNAME
 export EMAIL='kerolasa@iki.fi'
 
+# Remove existing path, add all possible random directories where
+# commands are found on various systems, check them once and make path
+# lookup quick by skipping all non-directory (missing, not access, etc)
+# entries.
+PATH=''
+PATHTMP=(
+	${HOME}/bin
+	/usr/local/bin
+	/usr/local/sbin
+	/bin
+	/usr/bin
+	/sbin
+	/usr/sbin
+	/usr/java/jdk/bin
+	/usr/lib/java/bin
+	/usr/kerberos/bin
+	/usr/kerberos/sbin
+	/usr/X11R6/bin
+	/usr/gnu/bin
+	/opt/sfw/bin
+	/usr/proc/bin
+	/usr/openwin/bin
+	/usr/ucb
+)
+for I in ${PATHTMP[@]}; do
+	if [ -d "$I" ]; then
+		if [ "x" = "x$PATH" ]; then
+			export PATH=$I
+		else
+			export PATH=$PATH:$I
+		fi
+	fi
+done
+
 #export LD_LIBRARY_PATH=
 #export LD_LIBRARY_PATH_64=
 export LANG=C
@@ -33,8 +67,9 @@ export LESSCHARSET=iso8859
 export LOGNAME=${USER}
 # Solaris cluster man
 #export MANPATH=${MANPATH}:/usr/cluster/man
+export MOZ_DISABLE_PANGO=1
 export PAGER=less
-export PATH=${HOME}/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/java/jdk/bin:/usr/kerberos/bin:/usr/kerberos/sbin
+export TMOUT=1800
 export TMPDIR=/tmp
 export cdspell=on
 export dotglob=on
