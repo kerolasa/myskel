@@ -1,12 +1,13 @@
 
 
-CC:
-Reported-by:
-Reviewed-by:
-Acked-by:
-Tested-by:
-Signed-off-by:
-Buglink:
-Bug-Debian:
-Bug-Redhat:
-References:
+CC: 
+Reported-by: 
+Reviewed-by: 
+Acked-by: 
+Tested-by: 
+Signed-off-by: 
+Buglink: 
+Bug-Debian: 
+Bug-Redhat: 
+Addresses: 
+References: 
