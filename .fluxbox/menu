@@ -14,7 +14,7 @@
 # - To prevent any other app from overwriting your menu
 #   you can change the menu name in ~/.fluxbox/init to:
 #     session.menuFile: ~/.fluxbox/my-menu
-[begin] (Fluxbox-1.1.1)
+[begin] (Fluxbox)
 [encoding] {UTF-8}
       [exec] (xterm) {xterm}
       [exec] (firefox) {firefox}

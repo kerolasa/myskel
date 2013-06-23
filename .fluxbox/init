@@ -10,16 +10,16 @@ session.screen0.toolbar.tools:	workspacename, prevworkspace, nextworkspace, icon
 session.screen0.toolbar.maxOver:	false
 session.screen0.toolbar.alpha:	254
 session.screen0.toolbar.onhead:	0
-session.screen0.clientMenu.usePixmap:	true
+session.screen0.clientMenu.usePixmap:	false
 session.screen0.tab.placement:	TopLeft
 session.screen0.tab.width:	64
-session.screen0.tabs.usePixmap:	true
+session.screen0.tabs.usePixmap:	false
 session.screen0.tabs.maxOver:	false
 session.screen0.tabs.intitlebar:	true
 session.screen0.iconbar.alignment:	Relative
 session.screen0.iconbar.mode:	{static groups}
 session.screen0.iconbar.iconWidth:	70
-session.screen0.iconbar.usePixmap:	true
+session.screen0.iconbar.usePixmap:	false
 session.screen0.iconbar.iconTextPadding:	10
 session.screen0.window.focus.alpha:	255
 session.screen0.window.unfocus.alpha:	255
@@ -36,12 +36,12 @@ session.screen0.slit.onhead:	0
 session.screen0.slit.layer:	Dock
 session.screen0.menu.alpha:	255
 session.screen0.focusNewWindows:	true
-session.screen0.workspaceNames:	email,web,shell 1,shell 2,shell 3,chats,
+session.screen0.workspaceNames:	1,2,3,4,5,6
 session.screen0.autoRaise:	true
 session.screen0.tooltipDelay:	500
 session.screen0.showwindowposition:	true
 session.screen0.clickRaises:	true
-session.screen0.windowMenu:	/home/sake/.fluxbox/windowmenu
+session.screen0.windowMenu:	/home/kerolasa/.fluxbox/windowmenu
 session.screen0.windowPlacement:	RowMinOverlapPlacement
 session.screen0.menuDelay:	200
 session.screen0.focusModel:	MouseFocus

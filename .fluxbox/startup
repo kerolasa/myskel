@@ -5,7 +5,7 @@
 # Lines starting with a '#' are ignored.
 
 # Change your keymap:
-#xmodmap "/home/sake/.Xmodmap"
+#xmodmap "/home/kerolasa/.Xmodmap"
 
 # Applications you want to run with fluxbox.
 # MAKE SURE THAT APPS THAT KEEP RUNNING HAVE AN ''&'' AT THE END.
@@ -22,4 +22,4 @@ xscreensaver &
 xsetroot -solid grey20
 exec fluxbox
 # or if you want to keep a log:
-#exec fluxbox -log "/home/sake/.fluxbox/log"
+#exec fluxbox -log "/home/kerolasa/.fluxbox/log"
