@@ -16,6 +16,7 @@ export EMAIL='kerolasa@iki.fi'
 # entries.
 PATH=''
 PATHTMP=(
+	/home/src/util-linux
 	${HOME}/bin
 	/usr/local/bin
 	/usr/local/sbin
@@ -27,6 +28,7 @@ PATHTMP=(
 	/usr/lib/java/bin
 	/usr/kerberos/bin
 	/usr/kerberos/sbin
+	/usr/bin/core_perl
 	/usr/X11R6/bin
 	/usr/gnu/bin
 	/opt/sfw/bin
@@ -50,7 +52,7 @@ export LANG=C
 export LC_ALL=C
 
 export BROWSER=firefox
-export EDITOR=vi
+export EDITOR=joe
 export GZIP='-9'
 export FCEDIT=${EDITOR}
 export VISUAL=${EDITOR}
