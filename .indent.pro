@@ -1,1 +1,7 @@
 -linux
+--preprocessor-indentation1
+-TFILE
+-Toff_t
+-Tsize_t
+-Ttime_t
+-Tuintmax_t
