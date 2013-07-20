@@ -37,7 +37,7 @@ PATHTMP=(
 	/usr/ucb
 )
 for I in ${PATHTMP[@]}; do
-	if [ -d "$I" ]; then
+	if [ -d "$I" ] && [ ! -h "$I" ]; then
 		if [ "x" = "x$PATH" ]; then
 			export PATH=$I
 		else
