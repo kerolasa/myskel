@@ -8,10 +8,10 @@ GIT_DESC = git describe
 
 tarfile: clean
 	sed -i "s/__GIT_DESCRIBE/`$(GIT_DESC)`/" .bashrc
-	sed -i "s|xxxHOMExxx|$(HOME)|" .joerc
+	sed -i "s|xxxHOMExxx|$(HOME)|" .joerc .config/user-dirs.conf
 	tar czf myskel.tgz `$(FILE_LIST)`
-	@echo "Extract the \`myskel.tgz' to your home directory."
-	@echo "Remember to git reset myskel version number in .bashrc"
+	@echo "Extract the 'myskel.tgz' to your home directory."
+	@echo "Remember to run make clean sometime soon."
 
 clean:
 	git clean -xdf
