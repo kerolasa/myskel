@@ -2,22 +2,28 @@
 
 function myskel()
 {
-	echo "This is myskel git __GIT_DESCRIBE"
-	echo "See https://github.com/kerolasa/myskel for latest version"
+	echo 'This is myskel git __GIT_DESCRIBE'
+	echo 'See https://github.com/kerolasa/myskel for latest version'
 }
 
-export FULLNAME="Sami Kerola"
+export FULLNAME='Sami Kerola'
 export NAME=$FULLNAME
 export EMAIL='kerolasa@iki.fi'
 
+export USER=$(id -un)
+export LOGNAME="${USER}"
+
 # Remove existing path, add all possible random directories where
-# commands are found on various systems, check them once and make path
-# lookup quick by skipping all non-directory (missing, not access, etc)
-# entries.
+# commands are found on various systems.  Check the directories once
+# and make path lookup quick, by skipping all non-directories (missing,
+# not access, symlinks, etc) entries.
 PATH=''
 PATHTMP=(
 	/home/src/util-linux
-	${HOME}/bin
+	"$HOME/bin"
+	"$HOME/.gem/ruby/2.0.0/bin"
+	"$HOME/versioning/scripts/puppet"
+	/etc/puppet/scripts
 	/usr/local/bin
 	/usr/local/sbin
 	/bin
@@ -36,15 +42,16 @@ PATHTMP=(
 	/usr/openwin/bin
 	/usr/ucb
 )
-for I in ${PATHTMP[@]}; do
+for I in "${PATHTMP[@]}"; do
 	if [ -d "$I" ] && [ ! -h "$I" ]; then
 		if [ "x" = "x$PATH" ]; then
-			export PATH=$I
+			export PATH="$I"
 		else
-			export PATH=$PATH:$I
+			export PATH="$PATH:$I"
 		fi
 	fi
 done
+unset PATHTMP
 
 #export LD_LIBRARY_PATH=
 #export LD_LIBRARY_PATH_64=
@@ -57,45 +64,53 @@ export GZIP='-9'
 export FCEDIT=${EDITOR}
 export VISUAL=${EDITOR}
 export HISTCONTROL=ignoreboth
-export USER=$(id -un)
-export HISTFILE=${HOME}/.histories/${USER}@${HOSTNAME}
-if [ ! -d ${HOME}/.histories ]; then
-	mkdir ${HOME}/.histories
+if [ ! -d "${HOME}/.histories" ]; then
+	mkdir "${HOME}/.histories"
 fi
+export HISTFILE="${HOME}/.histories/${USER}@${HOSTNAME}"
 export HISTFILESIZE=100
 export HISTSIZE=100
 export JOETERM=vt100
 export LESSCHARSET=iso8859
-export LOGNAME=${USER}
-# Solaris cluster man
-#export MANPATH=${MANPATH}:/usr/cluster/man
+# Solaris cluster manuals
+if [ -d /usr/cluster/man ]; then
+	export MANPATH="${MANPATH}:/usr/cluster/man"
+fi
 export MOZ_DISABLE_PANGO=1
 export PAGER=less
 export TMOUT=1800
-export TMPDIR=/tmp
+export TMPDIR="$HOME/tmp"
 export cdspell=on
 export dotglob=on
 
 unset LS_COLORS
 
-if [ "x${TERM}" = "xxterm" ]; then
-	export PS1="\[\033]0;\h\007\]\u@\h \w "
+if [ "x${TERM}" = 'xxterm' ]; then
+	export PS1='\[\033]0;\h\007\]\u@\h:\w '
 else
-	export PS1="\u@\h \w "
+	export PS1='\u@\h:\w '
 fi
 
-# The `complete -r' will disable /etc/bash_completion
-complete -r
+# Remove system /etc/bash_completion
+#complete -r
+if [ -f /etc/puppet/scripts/puppet-svn-bash-completion ]; then
+	source /etc/puppet/scripts/puppet-svn-bash-completion
+fi
 
 unalias -a
 alias cp='cp -i'
-alias less="less -Qin"
-alias ls="ls -Fb"
-alias more="more -dp"
+alias less='less -Qin'
+alias ls='ls -Fb'
+alias more='more -dp'
 alias mv='mv -i'
 alias rm='rm -i'
-alias which="type -path"
-alias rpmarch='rpm -q --qf "%{n}-%{v}-%{r}.%{arch}\n"'
+alias which='type -P'
+if type -P rdesktop >/dev/null; then
+	alias rdesktop='rdesktop -g 95%'
+fi
+if type -P rpm >/dev/null; then
+	alias rpmarch='rpm -q --qf "%{n}-%{v}-%{r}.%{arch}\n"'
+fi
 alias rpmspecdate='date +"* %a %b %d %Y  ${FULLNAME} <${EMAIL}>"'
 shopt -s cdspell
 shopt -s checkhash
@@ -118,5 +133,7 @@ fi
 
 umask 022
 ulimit -c unlimited
+
+cd "$HOME"
 
 # EOF
