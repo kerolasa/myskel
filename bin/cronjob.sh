@@ -2,15 +2,15 @@
 #
 # One line description.
 #
-# Your Name <your.name@example.com>
+# Sami Kerola <kerolasa@iki.fi>
 
 # Default settings, do not touch.
 # The trap ERR and pipefail are bashisms, do not change shebang.
-JOB_NAME=$(basename ${0})
-set -e		# exit on errors
+JOB_NAME="${0##*/}"
+set -e
 trap 'echo "${JOB_NAME}: exit on error"; exit 1' ERR
-set -u		# disallow usage of unset variables
-set -o pipefail	# make pipe writer failure to cause exit on error
+set -u
+set -o pipefail
 
 # Begin <do not touch>
 # Report errors by email only when shell is not interactive.
@@ -19,20 +19,18 @@ if [ -t 1 ]; then
 	# not initiate error reporting.
 	trap 'echo "${0}: exit on error"; exit 1' ERR
 else
-	OUTPUTFILE=$(mktemp /tmp/${JOB_NAME}.XXXXXX)
-	exec > ${OUTPUTFILE} 2>&1
+	OUTPUTFILE=$(mktemp "/tmp/${JOB_NAME}.XXXXXXXXX")
+	exec > "${OUTPUTFILE}" 2>&1
 	set -x
-	MAILTO="cron-errors@example.com"
+	MAILTO="system-admin-maillist@example.com"
 	CRONJOBLOGDIR="/tmp/${JOB_NAME}"
 	SERVER=$(hostname -s)
-	TIMESTAMP=$(date +%s)
-	trap "	cat ${OUTPUTFILE} |
-			mail -s \"${SERVER}: ${JOB_NAME} failed\" ${MAILTO}" ERR
-	trap "	if [ ! -d ${CRONJOBLOGDIR} ]; then
-			mkdir -p ${CRONJOBLOGDIR}
-		fi
-	mv ${OUTPUTFILE} ${CRONJOBLOGDIR}/${JOB_NAME}.${TIMESTAMP}" 0
-	find ${CRONJOBLOGDIR} -name "${JOB_NAME}.*" \
+	TIMESTAMP=$(date --iso=ns)
+	trap "cat "${OUTPUTFILE}" |
+		mailx -s \"${SERVER}: ${JOB_NAME} failed\" ${MAILTO}" ERR
+	trap "mv \"${OUTPUTFILE}\" \"${CRONJOBLOGDIR}/${JOB_NAME}.${TIMESTAMP}\"" 0
+	if [ ! -d "${CRONJOBLOGDIR}" ]; then mkdir -p "${CRONJOBLOGDIR}"; fi
+	find "${CRONJOBLOGDIR}" -name "${JOB_NAME}.*" \
 		-type f -mtime +7 -delete
 fi
 # End <do not touch>
