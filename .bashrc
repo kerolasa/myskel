@@ -105,6 +105,20 @@ alias more='more -dp'
 alias mv='mv -i'
 alias rm='rm -i'
 alias which='type -P'
+
+#http_proxy="proxy.example.com:1234"
+if [ "x" != "x$http_proxy" ]; then
+	HTTP_PROXY=$http_proxy
+	https_proxy=$http_proxy
+	HTTPS_PROXY=$http_proxy
+	export http_proxy HTTP_PROXY https_proxy HTTPS_PROXY
+fi
+# The $http_proxy could come from /etc/profile keep it separate from
+# previous if clause.
+if [ "x" != "x$http_proxy" ]; then
+	alias links="links -http-proxy $http_proxy -https-proxy $http_proxy"
+fi
+
 if type -P rdesktop >/dev/null; then
 	alias rdesktop='rdesktop -g 95%'
 fi
