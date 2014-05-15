@@ -13,7 +13,7 @@
 SCRIPT_INVOCATION_SHORT_NAME=${0##*/}
 set -e		# exit on errors
 # trap ERR is bashism, do not change shebang!
-trap 'echo "${SCRIPT_INVOCATION_SHORT_NAME}: exit on error"; exit 1' ERR
+trap 'echo "$SCRIPT_INVOCATION_SHORT_NAME: exit on error"; exit 1' ERR
 set -u		# disallow usage of unset variables
 set -o pipefail	# make pipe writer failure to cause exit on error
 RETVAL=0
@@ -22,24 +22,24 @@ RETVAL=0
 # If you don't want to get script name in front of the message,
 # which would be a bit strange, use normal echo.
 msg() {
-	echo "${SCRIPT_INVOCATION_SHORT_NAME}: ${@}"
+	echo "$SCRIPT_INVOCATION_SHORT_NAME: $@"
 }
 
 usage() {
 	echo "Usage:"
-	echo " ${0} [-hV] [argument ...]"
+	echo " $0 [-hV] [argument ...]"
 	echo ""
 	echo " -h   display this help and exit"
 	echo " -V   output version information and exit"
-	exit ${1}
+	exit $1
 }
 
 #MANDATORYB=0
 #while getopts a:bhV OPTIONS; do
 while getopts hV OPTIONS; do
-	case ${OPTIONS} in
+	case $OPTIONS in
 #		a)
-#			msg "-a ${OPTARG}"
+#			msg "-a $OPTARG"
 #			;;
 #		b)
 #			msg "-b"
@@ -64,15 +64,15 @@ while getopts hV OPTIONS; do
 done
 #shift $((OPTIND-1))
 # Make sure there is at least one argument.
-#if [ ${#} -eq 0 ]; then
+#if [ $# -eq 0 ]; then
 #	usage 1
 #fi
-#if [ "x0" = "x${MANDATORYB}" ]; then
+#if [ "x0" = "x$MANDATORYB" ]; then
 #	msg "mandatory argument is missing."
 #	usage 1
 #fi
 
 # INSERT HERE DRAGONS
 
-exit ${RETVAL}
+exit $RETVAL
 # EOF
