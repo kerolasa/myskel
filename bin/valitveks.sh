@@ -8,12 +8,15 @@ trap 'echo "${0##*/}: exit on error"; exit 1' ERR
 
 for I in "$@"; do
 	FILE="${I##*/}"
-	FILE=${FILE/ /_}
-	FILE=${FILE/	/_}
+	FILE=$(echo $FILE | tr ' 	' '__')
 	if [ "${I##*/}" = "$FILE" ]; then
 		continue
 	fi
-	mv --verbose --interactive "$I" "${I%/*}/$FILE"
+	if [ "${I/\/}"  = "$I" ]; then
+		mv --verbose --interactive "$I" "$FILE"
+	else
+		mv --verbose --interactive "$I" "${I%/*}/$FILE"
+	fi
 done
 
 exit 0
