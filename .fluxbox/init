@@ -41,7 +41,7 @@ session.screen0.autoRaise:	true
 session.screen0.tooltipDelay:	500
 session.screen0.showwindowposition:	true
 session.screen0.clickRaises:	true
-session.screen0.windowMenu:	/home/kerolasa/.fluxbox/windowmenu
+session.screen0.windowMenu:	xxxHOMExxx/.fluxbox/windowmenu
 session.screen0.windowPlacement:	RowMinOverlapPlacement
 session.screen0.menuDelay:	200
 session.screen0.focusModel:	MouseFocus

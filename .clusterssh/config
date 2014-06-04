@@ -24,7 +24,7 @@ screen_reserve_bottom=60
 screen_reserve_left=0
 screen_reserve_right=0
 screen_reserve_top=0
-send_menu_xml_file=/home/sake/.csshrc_send_menu
+send_menu_xml_file=xxxHOMExxx/.csshrc_send_menu
 show_history=0
 ssh=/usr/bin/ssh
 ssh_args=-x -o ConnectTimeout=5
