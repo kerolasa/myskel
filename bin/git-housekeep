@@ -50,18 +50,19 @@ while getopts arh OPTIONS; do
 	esac
 done
 
-git reflog expire --all
-git prune
-git gc --prune=now
-git repack -A -d
-if ${ALL}; then
-	git repack -a -f -d --window=250 --depth=250
-fi
 if ${REMOTE}; then
 	for I in $(git remote); do
 		echo "pruning: ${I}"
 		git remote prune ${I}
 	done
+fi
+git reflog expire --all
+git prune --expire=now
+git gc --prune=now
+if ${ALL}; then
+	git repack -a -f -F -d --window=250 --depth=250
+else
+	git repack -A -d
 fi
 
 exit 0
