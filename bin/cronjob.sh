@@ -8,7 +8,7 @@
 # The trap ERR and pipefail are bashisms, do not change shebang.
 JOB_NAME="${0##*/}"
 set -e
-trap 'echo "$JOB_NAME: exit on error"; exit 1' ERR
+trap 'echo "$JOB_NAME: exit on error in line $LINENO"; exit 1' ERR
 set -u
 set -o pipefail
 
