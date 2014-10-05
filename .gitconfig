@@ -1,6 +1,7 @@
 [user]
 	name = Sami Kerola
 	email = kerolasa@iki.fi
+	signingkey = FDE9B739
 
 [format]
 	headers = "Organization: lastminute.com\n"

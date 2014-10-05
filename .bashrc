@@ -21,9 +21,6 @@ PATH=''
 PATHTMP=(
 	/home/src/util-linux
 	"$HOME/bin"
-	"$HOME/.gem/ruby/2.0.0/bin"
-	"$HOME/versioning/scripts/puppet"
-	/etc/puppet/scripts
 	/usr/local/bin
 	/usr/local/sbin
 	/bin
