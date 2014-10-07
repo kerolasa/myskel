@@ -28,7 +28,7 @@ else
 	TIMESTAMP=$(date --iso=ns)
 	trap "cat "$OUTPUTFILE" |
 		mailx -s \"$SERVER: $JOB_NAME failed\" $MAILTO" ERR
-	trap "mv \"$OUTPUTFILE\" \"$CRONJOBLOGDIR/$JOB_NAME.$TIMESTAMP\"" 0
+	trap "mv \"$OUTPUTFILE\" \"$CRONJOBLOGDIR/$JOB_NAME.$TIMESTAMP\"" EXIT
 	if [ ! -d "$CRONJOBLOGDIR" ]; then mkdir -p "$CRONJOBLOGDIR"; fi
 	find "$CRONJOBLOGDIR" -name "$JOB_NAME.*" \
 		-type f -mtime +7 -delete
