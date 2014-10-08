@@ -1,0 +1,96 @@
+#!/bin/bash
+#
+# Dump all information from a corefile to a log file.
+#
+# Sami Kerola <kerolasa@iki.fi>
+
+# Uncomment if you need to debug.
+#set -x
+# Uncomment if you want to get rid of all output.
+#exec > /dev/null 2>&1
+
+SCRIPT_INVOCATION_SHORT_NAME="${0##*/}"
+set -e
+trap 'echo "$SCRIPT_INVOCATION_SHORT_NAME: exit on error in line $LINENO"; exit 1' ERR
+set -u
+set -o pipefail
+retval=0
+
+msg() {
+	echo "$SCRIPT_INVOCATION_SHORT_NAME: $1"
+	if [ $2 -ne 0 ]; then
+		exit $2
+	fi
+}
+usage() {
+	echo "Usage:"
+	echo " $0 [-h] -b executable core [...]"
+	echo ""
+	echo " -b <binary>  path to the executable that dropped the core"
+	echo " -h           display this help and exit"
+	exit $1
+}
+
+binimg=''
+while getopts b:hV OPTIONS; do
+	case $OPTIONS in
+		b)
+			readlink "$OPTARG" >/dev/null 2>&1 || msg "$OPTARG: no such executable" 1
+			binimg="$OPTARG"
+			;;
+		h)
+			usage 0
+			;;
+		*)
+			usage 1
+			;;
+	esac
+done
+shift $((OPTIND-1))
+if [ $# -eq 0 ]; then
+	usage 1
+fi
+if [ "x" = "x$binimg" ]; then
+	msg 'executable not defined' 1
+fi
+for core in "$@"; do
+	if [ ! -f "$core" ]; then
+		msg "$core: no such core file" 0
+		retval=1
+		continue
+	fi
+	gdblogfile="$core.$SCRIPT_INVOCATION_SHORT_NAME.log"
+	bininfo=$(ls -l "$binimg")
+	coreinfo=$(ls -l "$core")
+	gdb -batch \
+		-ex "set logging overwrite on" \
+		-ex "set logging file $gdblogfile" \
+		-ex "set logging on" \
+		-ex "set pagination off" \
+		-ex "set logging redirect on" \
+		-ex "printf \"**\n** Process info for $binimg - $core \n** Generated $(date --iso=s)\n\"" \
+		-ex "printf \"**\n** $bininfo \n** $coreinfo\n**\n\"" \
+		-ex "file $binimg" \
+		-ex "core-file $core" \
+		-ex "bt" \
+		-ex "info proc" \
+		-ex "printf \"*\n* Libraries \n*\n\"" \
+		-ex "info sharedlib" \
+		-ex "printf \"*\n* Memory map \n*\n\"" \
+		-ex "info target" \
+		-ex "printf \"*\n* Registers \n*\n\"" \
+		-ex "info registers" \
+		-ex "printf \"*\n* Current instructions \n*\n\"" -ex "x/16i \$pc" \
+		-ex "printf \"*\n* Threads (full) \n*\n\"" \
+		-ex "info threads" \
+		-ex "bt" \
+		-ex "thread apply all bt full" \
+		-ex "printf \"*\n* Threads (basic) \n*\n\"" \
+		-ex "info threads" \
+		-ex "thread apply all bt" \
+		-ex "printf \"*\n* Done \n*\n\"" \
+		-ex "quit"
+	msg "wrote: $gdblogfile" 0
+done
+exit $retval
+# EOF
