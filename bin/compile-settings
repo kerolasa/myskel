@@ -3,13 +3,26 @@ export GNULIB_TOOL=/home/src/gnulib/gnulib-tool
 export GNULIB_SRCDIR=/home/src/gnulib
 export CC=gcc
 export CXX=g++
-export CFLAGS="-O0 -g -ggdb -Wall -Wextra -pedantic"
+export CFLAGS="-O0 -g -ggdb -Wall -Wextra -pedantic -Wl,--print-gc-sections -fipa-pure-const -Wsuggest-attribute=pure -Wsuggest-attribute=const -Wsuggest-attribute=noreturn"
+export DISTCHECK_CONFIGURE_FLAGS="--enable-most-builds"
+export LD=ld.gold
 
 case "$1" in
 	clang)
 		export CC=clang
 		export CXX=clang++
-		export CFLAGS="-O0 -g -ggdb -Wall -Wextra -pedantic" # -fcatch-undefined-behavior"
+		export CFLAGS="-O0 -g -ggdb -Wall -Wextra -pedantic -ftrapv -fsanitize=undefined"
+		;;
+	clangquiet)
+		export CC=clang
+		export CXX=clang++
+		export CFLAGS="-O2 -g -ggdb"
+		;;
+	asan)
+		export CC=clang
+		export CXX=clang++
+		export CFLAGS='-O1 -g -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined -fsanitize=integer'
+		export ASAN_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer
 		;;
 	coverage)
 		export CFLAGS="-O0 -g -ggdb -fprofile-arcs -ftest-coverage"
@@ -18,7 +31,7 @@ case "$1" in
 		export CFLAGS="--param=ssp-buffer-size=4 -O -Wall -Werror=format-security -Werror=sequence-point -Wextra -Wformat -Wformat-security -Wmissing-parameter-type -Wno-missing-field-initializers -Wredundant-decls -Wsign-compare -Wstrict-overflow -Wswitch-default -Wswitch-enum -Wsync-nand -Wtype-limits -Wuninitialized -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused-parameter -Wunused-result -fno-common -fstack-protector -g -ggdb -pedantic -D_FORTIFY_SOURCE=2"
 		;;
 	wall2)
-		export CFLAGS="-Wabi -Wall -Wattributes -Wbad-function-cast -Wbuiltin-macro-redefined -Wcast-align -Wcoverage-mismatch -Wcpp -Wdeprecated -Wdeprecated-declarations -Wdisabled-optimization -Wdiv-by-zero -Wendif-labels -Wextra -Wformat-contains-nul -Wformat-extra-args -Wformat-security -Wformat-y2k -Wformat-zero-length -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-declarations -Wmissing-include-dirs -Wmissing-noreturn -Wmudflap -Wmultichar -Wno-format-nonliteral -Wno-logical-op -Wno-sign-compare -Wno-unused-parameter -Wnormalized=nfc -Woverflow -Woverlength-strings -Wpacked -Wpacked-bitfield-compat -Wpointer-arith -Wpointer-to-int-cast -Wpragmas -Wshadow -Wstrict-aliasing -Wsuggest-attribute=noreturn -Wsync-nand -Wtrampolines -Wunknown-pragmas -Wunused -Wunused-local-typedefs -Wvolatile-register-var -Wwrite-strings -fdiagnostics-show-option -funit-at-a-time"
+		export CFLAGS="-O -fPIC -D_FORTIFY_SOURCE -W -Wabi -DANOTHER_BRICK_IN_THE -Wall -Wattributes -Wbad-function-cast -Wbuiltin-macro-redefined -Wcast-align -Wchar-subscripts -Wcoverage-mismatch -Wcpp -Wdeclaration-after-statement -Wdeprecated -Wdeprecated-declarations -Wdisabled-optimization -Wdiv-by-zero -Wendif-labels -Wextra -Wfloat-equal -Wformat-contains-nul -Wformat-extra-args -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wformat-zero-length -Wformat=2 -Winit-self -Winvalid-pch -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wmissing-noreturn -Wmissing-prototypes -Wmultichar -Wnested-externs -Wno-format-nonliteral -Wno-inline -Wno-logical-op -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-sign-compare -Wno-unused-parameter -Wno-unused-result -Wnormalized=nfc -Wold-style-definition -Woverflow -Woverlength-strings -Wpacked -Wpacked-bitfield-compat -Wpointer-arith -Wpointer-to-int-cast -Wpragmas -Wredundant-decls -Wshadow -Wsign-compare -Wstrict-aliasing -Wstrict-aliasing=2 -Wstrict-prototypes -Wsuggest-attribute=noreturn -Wsync-nand -Wtrampolines -Wtype-limits -Wundef -Wuninitialized -Wunknown-pragmas -Wunused -Wunused-local-typedefs -Wvla -Wvolatile-register-var -Wwrite-strings -fdata-sections -fdiagnostics-show-option -ffunction-sections -fno-common -funit-at-a-time -fvisibility=hidden -pipe"
 		;;
 	profile)
 		export CFLAGS="-O0 -g -ggdb -pg"
@@ -29,16 +42,30 @@ case "$1" in
 		export CFLAGS=''
 		;;
 	perform)
-		export CFLAGS="-O3 -Os -Ofast"
+		export CFLAGS="-O3 -Ofast"
+		export CXXFLAGS="$CFLAGS"
 		;;
 	smatch)
 		export CFLAGS="-Wsparse-all"
 		export CHECK=smatch
 		export CC=cgcc
 		;;
+	default)
+		;;
+	remove)
+		unset CC
+		unset CFLAGS
+		unset CHECK
+		unset CXX
+		unset CXXFLAGS
+		unset DISTCHECK_CONFIGURE_FLAGS
+		unset GNULIB_SRCDIR
+		unset GNULIB_TOOL
+		;;
 	*)
 		echo "no idea"
 		;;
 esac
-
+	
 export CXXFLAGS=${CFLAGS}
+
