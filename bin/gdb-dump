@@ -35,7 +35,7 @@ binimg=''
 while getopts b:hV OPTIONS; do
 	case $OPTIONS in
 		b)
-			readlink "$OPTARG" >/dev/null 2>&1 || msg "$OPTARG: no such executable" 1
+			readlink -f "$OPTARG" >/dev/null 2>&1 || msg "$OPTARG: no such executable" 1
 			binimg="$OPTARG"
 			;;
 		h)
