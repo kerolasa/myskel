@@ -10,12 +10,12 @@
 #exec > /dev/null 2>&1
 
 # Default settings, do not touch.
-SCRIPT_INVOCATION_SHORT_NAME=$(basename ${0})
-set -e # exit on errors
+SCRIPT_INVOCATION_SHORT_NAME="${0##*/}"
+set -e
 # trap ERR is bashism, do not change shebang!
-trap 'echo "${SCRIPT_INVOCATION_SHORT_NAME}: exit on error"; exit 1' ERR
-set -u # disallow usage of unset variables
-set -o pipefail	# make pipe writer failure to cause exit on error
+trap 'echo "${SCRIPT_INVOCATION_SHORT_NAME}: exit on error in line $LINENO"; exit 1' ERR
+set -u
+set -o pipefail
 
 msg() {
 	echo "${SCRIPT_INVOCATION_SHORT_NAME}: ${@}"
@@ -25,18 +25,22 @@ usage() {
 	echo "Usage:"
 	echo " ${0} [-a] [-h]"
 	echo ""
-	echo " -a   perform expensive repack"
+	echo " -l   clean local reflog"
+	echo " -m   delete merged branches"
 	echo " -r   prune remote branches"
+	echo " -e   perform expensive repack (almost never needed)"
 	echo " -h   display this help and exit"
 	exit ${1}
 }
 
-ALL=false
+MERGED=false
 REMOTE=false
-while getopts arh OPTIONS; do
+LOCAL=false
+EXPENSIVE=false
+while getopts elmrh OPTIONS; do
 	case ${OPTIONS} in
-		a)
-			ALL=true
+		e)
+			EXPENSIVE=true
 			;;
 		h)
 			usage 0
@@ -44,22 +48,40 @@ while getopts arh OPTIONS; do
 		r)
 			REMOTE=true
 			;;
+		l)
+			LOCAL=true
+			;;
+		m)
+			MERGED=true
+			;;
 		*)
 			usage 1
 			;;
 	esac
 done
 
-if ${REMOTE}; then
+if ! ${MERGED} &&  ! ${REMOTE} && ! ${LOCAL} && ! ${EXPENSIVE}; then
+	msg "nothing requsted, use -h for help"
+	exit 1
+fi
+
+if ${MERGED}; then
+	for I in $(git branch --merged | grep -Ev '(\*|master)'); do
+		git branch -d $I
+	done
+fi
+if ${REMOTE} || ${EXPENSIVE}; then
 	for I in $(git remote); do
 		echo "pruning: ${I}"
 		git remote prune ${I}
 	done
 fi
-git reflog expire --all
-git prune --expire=now
-git gc --prune=now
-if ${ALL}; then
+if ${LOCAL} || ${EXPENSIVE}; then
+	git reflog expire --all
+	git prune --expire=now
+	git gc --prune=now
+fi
+if ${EXPENSIVE}; then
 	git repack -a -f -F -d --window=250 --depth=250
 else
 	git repack -A -d
