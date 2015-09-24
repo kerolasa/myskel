@@ -4,13 +4,14 @@
 	signingkey = FDE9B739
 
 [format]
-	headers = "Organization: lastminute.com\n"
+	headers = "Organization: CloudFlare\n"
 	subjectprefix = PATCH
-	suffix = .txt
+	suffix = .patch
 	numbered = auto
 
 [commit]
-	template = ~/.gittemplate
+	gpgSign = true
+#	template = ~/.gittemplate
 
 [apply]
 	whitespace = warn
@@ -18,13 +19,13 @@
 [sendemail]
 	smtpserver = /usr/bin/msmtp
 	chainreplyto = false
-	cc = kerolasa@iki.fi
 
 [alias]
 	co = checkout
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	weekly = !sh -c 'git checkout $(date +%Ywk%W)'
+	tagtimes = for-each-ref --sort=taggerdate --format '%(refname)\t%(taggerdate)' refs/tags
 
 [color]
 	ui = true
@@ -41,3 +42,10 @@
 
 [remote-hg]
 	hg-git-compat = true
+
+[http]
+	sslVerify = false
+	postBuffer = 524288000
+
+[credential]
+	helper = cache --timeout 3600
