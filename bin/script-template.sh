@@ -74,5 +74,19 @@ done
 
 # INSERT HERE DRAGONS
 
+SCRIPTS_LOCK="/var/lock/$SCRIPT_INVOCATION_SHORT_NAME"
+
+lockfailed() {
+	msg "cannot get lock"
+	exit 1
+}
+exec 42>>$SCRIPTS_LOCK
+flock --wait 120 --exclusive 42 || lockfailed
+
+# INSERT CRITICAL SECTION HERE
+
+flock --unlock 42
+exec 42>&-
+
 exit $RETVAL
 # EOF
