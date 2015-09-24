@@ -1,0 +1,9 @@
+.TS
+allbox;
+c s s
+l l l.
+ six chars
+ a	b	c
+	d	e
+		f
+.TE

@@ -1,0 +1,55 @@
+---------
+# Find suid & setgid bits from root file system
+
+find / -xdev -perm -4000 -o -perm -2000 -print
+---------
+# cpio directory structure to other path
+
+find . -depth -print | cpio -pvmud /
+
+# cpio to remote host
+
+find trunk -depth -print0 | cpio -a0o | ssh server.example.net 'cpio -imd'
+---------
+# Find average resident size of httpd process
+
+ps -eo rss,comm |
+awk '$2 ~ /^httpd$/ {res+=$1; nro++}
+END {printf "Rss sum: %d nro procs: %d average rss: %d\n", res, nro, res/nro}'
+---------
+# Print number of each socket state.
+
+netstat -an |
+awk '/^tcp/ {A[$(NF)]++} END {for (I in A) {printf "%5d %s\n", A[I], I}}'
+---------
+sed 's/Jan/01/g; s/Feb/02/g; s/Mar/03/g; s/Apr/04/g; s/May/05/g; s/Jun/06/g;
+s/Jul/07/g; s/Aug/08/g; s/Sep/09/g; s/Oct/10/g; s/Nov/11/g; s/Dec/12/g'
+---------
+# Apache access log sorting
+
+sort -t ' ' -k 4.9,4.12n -k 4.5,4.7M -k 4.2,4.3n -k 4.14,4.15n -k 4.17,4.18n -k 4.20,4.21n
+---------
+# Block deletion with awk.
+
+awk -v RS= '!/delete-block/ {printf "%s%s", $0, RT}' file
+---------
+# List certificate alias dns names
+
+openssl s_client -connect example.com:443 |
+openssl x509 -noout -text | grep DNS:
+---------
+# None greedy sed
+
+echo "http://www.suon.co.uk/product/1/7/3/" | sed -n 's;\(http://[^/]*\)/.*;\1;p'
+---------
+# what git commands I use
+
+history |
+ grep git |
+ awk '{CMD[$3]++;count++;}END{for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' |
+ grep -v "./" |
+ column -c3 -s " " -t |
+ sort -nr |
+ nl |
+ head -n10
+---------
