@@ -10,7 +10,7 @@
 #exec > /dev/null 2>&1
 
 # Default settings, do not touch.
-SCRIPT_INVOCATION_SHORT_NAME=${0##*/}
+SCRIPT_INVOCATION_SHORT_NAME="${0##*/}"
 set -e		# exit on errors
 # trap ERR is bashism, do not change shebang!
 trap 'echo "$SCRIPT_INVOCATION_SHORT_NAME: exit on error in line $LINENO"; exit 1' ERR
@@ -22,7 +22,7 @@ RETVAL=0
 # If you don't want to get script name in front of the message,
 # which would be a bit strange, use normal echo.
 msg() {
-	echo "$SCRIPT_INVOCATION_SHORT_NAME: $@"
+	echo "$SCRIPT_INVOCATION_SHORT_NAME: $@" 2>&1
 }
 
 usage() {
@@ -37,7 +37,7 @@ usage() {
 #MANDATORYB=0
 #while getopts a:bhV OPTIONS; do
 while getopts hV OPTIONS; do
-	case $OPTIONS in
+	case "$OPTIONS" in
 #		a)
 #			msg "-a $OPTARG"
 #			;;
@@ -80,7 +80,7 @@ lockfailed() {
 	msg "cannot get lock"
 	exit 1
 }
-exec 42>>$SCRIPTS_LOCK
+exec 42>>"$SCRIPTS_LOCK"
 flock --wait 120 --exclusive 42 || lockfailed
 
 # INSERT CRITICAL SECTION HERE
