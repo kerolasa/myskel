@@ -22,7 +22,7 @@ RETVAL=0
 # If you don't want to get script name in front of the message,
 # which would be a bit strange, use normal echo.
 msg() {
-	echo "$SCRIPT_INVOCATION_SHORT_NAME: $@" 2>&1
+	echo "$SCRIPT_INVOCATION_SHORT_NAME: $*" 2>&1
 }
 
 usage() {
@@ -31,7 +31,7 @@ usage() {
 	echo ""
 	echo " -h   display this help and exit"
 	echo " -V   output version information and exit"
-	exit $1
+	exit "$1"
 }
 
 #MANDATORYB=0
