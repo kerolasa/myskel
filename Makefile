@@ -16,6 +16,7 @@ tarfile: clean
 		.fluxbox/init \
 		.fluxbox/startup \
 		.joerc
+	chmod -R go-rwx .
 	tar czf myskel.tgz `$(FILE_LIST)`
 	@echo "Extract the 'myskel.tgz' to your home directory."
 	@echo "Remember to run make clean sometime soon."
