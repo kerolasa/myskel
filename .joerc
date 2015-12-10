@@ -3,7 +3,7 @@
 
  JOE looks for this file in:
 	1 - $HOME/.joerc
-	2 - /etc/joe/joerc
+	2 - /etc/joe/jmacsrc
 
  This file can include other files by placing the following include command
  in the first column:
@@ -18,7 +18,7 @@
  Put each color override you want in the first column.
 
  Valid colors:
-   bold inverse blink dim underline
+   bold inverse blink dim underline italic
    white cyan magenta blue yellow green red black
    bg_white bg_cyan bg_magenta bg_blue bg_yellow bg_green bg_red bg_black
 
@@ -68,8 +68,9 @@
 
  -nocurdir	Do not prompt with current directory
 
- -nobackups	
-	If you don't want backup files to be created
+ -nobackups	If you don't want backup files to be created
+
+ -nodeadjoe	If you don't want DEADJOE files to be created
 
  -break_hardlinks
 		Delete file before writing, to break hard links
@@ -107,6 +108,8 @@
 
 -nonotice	Disable copyright notice
 
+ -noexmsg	Disable exiting message ("File not changed so no update needed")
+
 -noxon		Attempt to turn off ^S/^Q processing
 
  -orphan	Put extra files given on command line in orphaned buffers
@@ -127,9 +130,12 @@
 -notite         Don't send terminal initialization and termination strings:
                 prevents restoration of screen on exit.
 
+ -nolinefeeds	Prevent sending linefeeds to preserve screen history in terminal
+                emulator's scroll-back buffer.
+
  -usetabs       Use tabs to help optimize screen update.
 
- -assume_color	Assume terminal has ANSI color support even if termcap/terminfo entry
+-assume_color	Assume terminal has ANSI color support even if termcap/terminfo entry
 		says that it doesn't.  This only applies if the terminal otherwise
 		looks like an ANSI terminal (support bold and capability starts with
 		ESC [).
@@ -156,6 +162,8 @@
 
  -menu_jump	Jump into file selection menu when tab is hit (otherwise, menu
 		comes up, but cursor stays in file name prompt).
+
+ -notagsmenu	Disable tags file search menu
 
  -icase         Search is case insensitive by default.
 
@@ -219,12 +227,14 @@
   %O  Byte offset into file in hex
   %a  Ascii value of character under cursor
   %A  Ascii value of character under cursor in hex
+  %w  Width of character under cursor
   %p  Percent of file cursor is at
   %l  No. lines in file
   %k  Entered prefix keys
   %S  '*SHELL*' if there is a shell running in window
   %M  Macro recording message
   %y  Syntax
+  %e  Encoding
   %x  Context (first non-indented line going backwards)
   %dd day
   %dm month
@@ -239,9 +249,12 @@
   \b  Bold
   \d  Dim
   \f  Blink
+  \l  Italic
 
 -lmsg \i%k%T%W%I%X %n %m%y%R %M %x
--rmsg  %S Row %r Col %c %u  Ctrl-K H for help
+-rmsg  %S Row %4r Col %3c %u  Ctrl-K H for help
+-smsg ** Line %r Col %c Offset %o(0x%O) %e %a(0x%A) Width %w ** 
+-zmsg ** Line %r Col %c Offset %o(0x%O) ** 
 
  SECOND SECTION: File name dependant local option settings:
 
@@ -258,6 +271,9 @@
 
 	-cpara >#!;*/%
 				Characters which can indent paragraphs.
+
+	-cnotpara .
+				Characters which begin non-paragraph lines.
 
 	-encoding name
 				Set file coding (for example: utf-8, iso-8859-15)
@@ -280,9 +296,9 @@
 				'indentc's if cursor is at first non-space
 				character.
 
--tab 8				Tab width
+	-tab nnn		Tab width
 
-	-indentc 9		Indentation character (32 for space, 9 for tab)
+	-indentc nnn		Indentation character (32 for space, 9 for tab)
 
 	-istep nnn		Number of indentation columns
 
@@ -307,13 +323,13 @@
 
 	-lmargin nnn		Left margin
 
--rmargin 66		Right margin
+	-rmargin nnn		Right margin
 
 	-flowed			Put one space after intermediate paragraph lines
 				for support of flowed text.
 
 
--french			One space after '.', '?' and '!' for wordwrap
+	-french			One space after '.', '?' and '!' for wordwrap
 				and paragraph reformat instead of two.  Joe
 				does not change the spacing you give, but
 				sometimes it must put spacing in itself.  This
@@ -345,6 +361,8 @@
 
 	These define the language syntax for ^G (goto matching delimiter):
 
+	-highlighter_context	Use the highlighter context for ^G
+
 	-single_quoted		Text between '  ' should be ignored (this is
 				not good for regular text since ' is
 				normally used alone as an apostrophe)
@@ -368,7 +386,7 @@
 
  Default local options
 -highlight
--istep 8
+-istep 4
 
  Perforce macro: use this macro (put in first column) to have joe "p4 edit"
  a file you're about to change.
@@ -396,17 +414,18 @@
 
 :defmenu root
 mode,"overwrite",rtn	T Overtype %Zoverwrite%
-mode,"hex",rtn	% % Hex edit mode
+mode,"hex",rtn	' Hex edit mode
 mode,"autoindent",rtn	I Autoindent %Zautoindent%
 mode,"wordwrap",rtn	W Word wrap %Zwordwrap%
 mode,"tab",rtn	D Tab width %Ztab%
 mode,"lmargin",rtn	L Left margin %Zlmargin%
 mode,"rmargin",rtn	R Right margin %Zrmargin%
-mode,"square",rtn	X Rectangle mode %Zsquare%
+mode,"square",rtn	X Column mode %Zsquare%
 mode,"indentc",rtn	% % Indent char %Zindentc%
 mode,"istep",rtn	% % Indent step %Zistep%
+menu,"indent",rtn	= Indent select
 mode,"highlight",rtn	H Highlighting %Zhighlight%
-mode,"crlf",rtn	Z CR-LF (MS-DOS) %Zcrlf%
+mode,"crlf",rtn	Z CR-LF/MS-DOS %Zcrlf%
 mode,"linums",rtn	N Line numbers %Zlinums%
 mode,"beep",rtn	B Beep %Zbeep%
 mode,"rdonly",rtn	O Read only %Zrdonly%
@@ -428,6 +447,16 @@ menu,"cursor",rtn	% % cursor options
 menu,"marking",rtn	% % marking options
 menu,"tab",rtn	% % tab/indent options
 
+:defmenu indent
+mode,"istep",rtn,"1",rtn,mode,"indentc",rtn,"32",rtn,msg,"Indent step = 1, Indent character = 32",rtn	1 Space
+mode,"istep",rtn,"2",rtn,mode,"indentc",rtn,"32",rtn,msg,"Indent step = 2, Indent character = 32",rtn	2 Spaces
+mode,"istep",rtn,"3",rtn,mode,"indentc",rtn,"32",rtn,msg,"Indent step = 3, Indent character = 32",rtn	3 Spaces
+mode,"istep",rtn,"4",rtn,mode,"indentc",rtn,"32",rtn,msg,"Indent step = 4, Indent character = 32",rtn	4 Spaces
+mode,"istep",rtn,"5",rtn,mode,"indentc",rtn,"32",rtn,msg,"Indent step = 5, Indent character = 32",rtn	5 Spaces
+mode,"istep",rtn,"8",rtn,mode,"indentc",rtn,"32",rtn,msg,"Indent step = 8, Indent character = 32",rtn	8 Spaces
+mode,"istep",rtn,"10",rtn,mode,"indentc",rtn,"32",rtn,msg,"Indent step = 10, Indent character = 32",rtn	0 Ten
+mode,"istep",rtn,"1",rtn,mode,"indentc",rtn,"9",rtn,msg,"Indent step = 1, Indent character = 9",rtn	T Tab
+
 :defmenu menu
 mode,"menu_explorer",rtn	% % Menu explorer %Zmenu_explorer%
 mode,"menu_above",rtn	% % Menu position %Zmenu_above%
@@ -435,6 +464,7 @@ mode,"menu_jump",rtn	% % Jump into menu %Zmenu_jump%
 mode,"transpose",rtn	% % Transpose menus %Ztranspose%
 
 :defmenu ^G
+mode,"highlighter_context",rtn	% % ^G uses highlighter context %Zhighlighter_context%
 mode,"single_quoted",rtn	% % ^G ignores '...' %Zsingle_quoted%
 mode,"no_double_quoted",rtn	% % ^G no ignore "..." %Zno_double_quoted%
 mode,"c_comment",rtn	% % ^G ignores /*...*/ %Zc_comment%
@@ -442,7 +472,7 @@ mode,"cpp_comment",rtn	% % ^G ignores //... %Zcpp_comment%
 mode,"pound_comment",rtn	% % ^G ignores #... %Zpound_comment%
 mode,"vhdl_comment",rtn	% % ^G ignores --... %Zvhdl_comment%
 mode,"semi_comment",rtn	% % ^G ignores ;... %Zsemi_comment%
-mode,"tex_comment",rtn % % ^G ignores %... %Ztex_comment%
+mode,"tex_comment",rtn % % ^G ignores %%... %Ztex_comment%
 mode,"text_delimiters",rtn % % Text delimiters %Ztext_delimiters%
 
 :defmenu search
@@ -455,6 +485,7 @@ mode,"csmode",rtn	% % Continued search %Zcsmode%
 mode,"french",rtn	% % French spacing %Zfrench%
 mode,"flowed",rtn	% % Flowed text %Zflowed%
 mode,"cpara",rtn	% % Paragraph indent chars %Zcpara%
+mode,"cnotpara",rtn	% % Not-paragraph chars %Zcnotpara%
 
 :defmenu file
 mode,"restore",rtn	% % Restore cursor %Zrestore%
@@ -468,6 +499,7 @@ mode,"nobackup",rtn	% % No backup %Znobackup%
 :defmenu global
 mode,"nolocks",rtn	% % Disable locks %Znolocks%
 mode,"nobackups",rtn	% % Disable backups %Znobackups%
+mode,"nodeadjoe",rtn	% % Disable DEADJOE %Znodeadjoe%
 mode,"nomodcheck",rtn	% % Disable mtime check %Znomodcheck%
 mode,"nocurdir",rtn	% % Disable current dir %Znocurdir%
 mode,"exask",rtn	% % Exit ask %Zexask%
@@ -504,6 +536,7 @@ mode,"spaces",rtn	% % No tabs %Zspaces%
  Use \b to turn on/off bold
  Use \d to turn on/off dim
  Use \f to turn on/off flash
+ Use \l to turn on/off italic
 
  Use \| to insert a spring: all springs in a given line are set to the same
  width such that the entire line exactly fits in the width of the screen (if
@@ -528,7 +561,7 @@ mode,"spaces",rtn	% % No tabs %Zspaces%
 
 {Windows
 \i   Help Screen    \|turn off with ^KH    prev. screen ^[,    next screen ^[.     \i
-\i \i\|^KO Split the window in half           \|^KE Load file into window             \|\i \i
+\i \i\|^KO Split the window in half           \|F1 - F4 Pop-up shell window           \|\i \i
 \i \i\|^KG Make current window bigger         \|^KT Make current window smaller       \|\i \i
 \i \i\|^KN Go to the window below             \|^KP Go to the window above            \|\i \i
 \i \i\|^[V Switch to next buffer              \|^[U Switch to previous buffer         \|\i \i
@@ -642,6 +675,8 @@ mode,"spaces",rtn	% % No tabs %Zspaces%
 	:query		For single-character query lines
 	:querya		Singe-character query for quote
 	:querysr	Search & Replace single-character query
+	:shell		For shell windows
+	:vtshell	For terminal emulator windows
 
  Other sections may be given as well for organization purposes or for
  use with the '-keymap' option.
@@ -719,8 +754,6 @@ msg		^[ ^H		Display a message
 nextw		^K N		Goto next window
 nextw		^K ^N
 nextw		^K n
-nextw		^[ [ 1 ; 3 C	alt right in (newer) xterm
-nextw		^[ [ 3 C	alt right in gnome-terminal
 pgdn		.kN		Screen down
 pgdn		^V
 pgdn		^[ [ 6 ~
@@ -733,8 +766,6 @@ play		^K 0 TO 9	Execute macro
 prevw		^K P		Goto previous window
 prevw		^K ^P
 prevw		^K p
-prevw		^[ [ 1 ; 3 D	alt left in (newer) xterm
-prevw		^[ [ 3 D	alt left in gnome-terminal
 query		^K ?		Macro query insert
 record		^K [		Record a macro
 retype		^R		Refresh screen
@@ -755,8 +786,10 @@ defm3up		M3UP
 defm3drag	M3DRAG		Select a region of lines
 
 xtmouse		^[ [ M		Introduces an xterm mouse event
+extmouse	^[ [ <		Introduces an extended xterm mouse event
 
-if,"char==65",then,"it's an A",else,"it's not an a",endif	^[ q
+ Sample if/then/else macro
+ if,"char==65",then,"it's an A",else,"it's not an a",endif	^[ q
 
 :main			Text editing window
 :inherit windows
@@ -768,8 +801,8 @@ if,"char==65",then,"it's an A",else,"it's not an a",endif	^[ q
 :def ispellword psh,nextword,markk,prevword,markb,filt,"cat >ispell.tmp;ispell ispell.tmp </dev/tty >/dev/tty;tr -d <ispell.tmp '\\012';/bin/rm ispell.tmp",rtn,retype,nextword
 
  Aspell
-:def aspellfile filt,"SPLTMP=`mktemp -t joespell.XXXXXXXXXX`;cat >$SPLTMP;aspell --lang=",language,".",charset," -x -c $SPLTMP </dev/tty >/dev/tty;cat $SPLTMP;/bin/rm $SPLTMP",rtn,retype
-:def aspellword psh,nextword,markk,prevword,markb,filt,"SPLTMP=`mktemp -t joespell.XXXXXXXXXX`;cat >$SPLTMP;aspell --lang=",language,".",charset," -x -c $SPLTMP </dev/tty >/dev/tty;tr -d <$SPLTMP '\\012';/bin/rm $SPLTMP",rtn,retype,nextword
+:def aspellfile filt,"SPLTMP=ispell.tmp;cat >$SPLTMP;aspell --lang=",language,".",charset," -x -c $SPLTMP </dev/tty >/dev/tty;cat $SPLTMP;/bin/rm $SPLTMP",rtn,retype
+:def aspellword psh,nextword,markk,prevword,markb,filt,"SPLTMP=ispell.tmp;cat >$SPLTMP;aspell --lang=",language,".",charset," -x -c $SPLTMP </dev/tty >/dev/tty;tr -d <$SPLTMP '\\012';/bin/rm $SPLTMP",rtn,retype,nextword
 
 
 aspellfile	^[ l
@@ -787,11 +820,40 @@ aspellword	^[ n
 
 :def man scratch,"* Man Page *",rtn,bof,markb,eof," ",markk,blkdel," ",ltarw,run,"man -P cat -S 2:3 "
 
+ Shell windows
+
+:def shell1 scratch,"* Shell 1 *",rtn,vtbknd!,eof
+:def shell2 scratch,"* Shell 2 *",rtn,vtbknd!,eof
+:def shell3 scratch,"* Shell 3 *",rtn,vtbknd!,eof
+:def shell4 scratch,"* Shell 4 *",rtn,vtbknd!,eof
+
+ Macros allowed in shell window commands
+:def shell_clear psh,bof,markb,eof,markk,blkdel
+:def shell_parse parserr
+:def shell_gparse gparse
+:def shell_release release
+:def shell_math maths
+:def shell_typemath txt,math,"ins",rtn,rtn,txt,"",rtn
+:def shell_rtn rtn
+:def shell_edit edit
+:def shell_dellin dellin
+:def shell_cd cd
+:def shell_pop popabort
+:def shell_markb markb
+:def shell_markk markk
+
+ Split window version
+ :def shell1 if,"is_shell==0",then,tw1,mfit,endif,scratch,"* Shell 1 *",rtn,vtbknd!,eof
+ :def shell2 if,"is_shell==0",then,tw1,mfit,endif,scratch,"* Shell 2 *",rtn,vtbknd!,eof
+ :def shell3 if,"is_shell==0",then,tw1,mfit,endif,scratch,"* Shell 3 *",rtn,vtbknd!,eof
+ :def shell4 if,"is_shell==0",then,tw1,mfit,endif,scratch,"* Shell 4 *",rtn,vtbknd!,eof
+
  Here we guess some common key sequences which either do not have termcap
  sequences or which are frequently wrong.  Note that if the termcap entry is
  correct, it will override these later on.
 
-paste			^[ ] 5 2 ;		Bracketed paste
+paste			^[ ] 5 2 ;		Base64 paste (obsolete)
+brpaste			^[ [ 2 0 0 ~		Bracketed paste
 
 insc			^[ [ 2 ~
 insc			^[ [ L			SCO
@@ -860,7 +922,7 @@ execmd		^[ X		Prompt for command to execute
 execmd		^[ ^X		Prompt for command to execute
 finish		^[ ^I		Complete word in document
 finish		^[ ^M		Complete word: used to be math
-mwind,mfit,jump,bol		^[ SP
+mwind!,mfit,jump,bol		^[ SP
 isrch		^[ s		Forward incremental search
 isrch		^[ S		Forward incremental search
 isrch		^[ ^S		Forward incremental search
@@ -1020,13 +1082,9 @@ markk		^K k
 menu,"root",rtn	^T
 nextpos		^K =		Goto next position in position history
 nextword	^X		Goto next word
-nextword	^[ [ 1 ; 5 C	ctrl right in (newer) xterm
-nextword	^[ [ 5 C	ctrl right in gnome-terminal
 open		^]		Split line
 prevpos		^K -		Previous position in history
 prevword	^Z		Previous word
-prevword	^[ [ 1 ; 5 D	ctrl left in (newer) xterm
-prevword	^[ [ 5 D	ctrl left in gnome-terminal
 reload		^K `		Revert file
 redo		^^		Redo changes
 rindent		^K .		Indent to right
@@ -1058,6 +1116,22 @@ uparw		.ku		Go up
 uparw		^P
 uparw		^[ O A
 uparw		^[ [ A
+shell1		^[ [ 1 1 ~
+shell1		^[ O P
+shell1		^[ [ [ A
+shell1		.k1
+shell2		^[ [ 1 2 ~
+shell2		^[ O Q
+shell2		^[ [ [ B
+shell2		.k2
+shell3		^[ [ 1 3 ~
+shell3		^[ O R
+shell3		^[ [ [ C
+shell3		.k3
+shell4		^[ [ 1 4 ~
+shell4		^[ O S
+shell4		^[ [ [ D
+shell4		.k4
 
 :prompt			Prompt windows
 :inherit main
@@ -1152,3 +1226,31 @@ type		^@ TO ÿ
 
 :querysr		Search & replace query window
 type		^@ TO ÿ
+
+:shell			Input to shell windows
+:inherit main
+""		^C		Abort
+""		^D		Eof
+"	"	^I		Tab
+""		^H		Backspace
+""		^M		Return
+""		^?		Backspace
+
+:vtshell		Input to ANSI shell windows
+:inherit main
+"[A"		 [ A
+"[A"		.ku
+"[B"		 [ B
+"[B"		.kd
+"[C"		 [ C
+"[C"		.kr
+"[D"		 [ D
+"[D"		.kl
+""		^A		BOL for bash
+""		^C		Abort
+""		^D		Eof
+""		^E		EOL for bash
+"	"	^I		Tab
+""		^H		Backspace
+""		^M		Return
+""		^?		Backspace
