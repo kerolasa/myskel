@@ -1,7 +1,12 @@
 -linux
---preprocessor-indentation1
 -TFILE
 -Toff_t
 -Tsize_t
 -Ttime_t
 -Tuintmax_t
+--blank-lines-after-declarations
+--format-all-comments
+--line-length80
+--preprocessor-indentation1
+--start-left-side-of-comments
+--swallow-optional-blank-lines
