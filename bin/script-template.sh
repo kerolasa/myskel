@@ -81,7 +81,7 @@ lockfailed() {
 	exit 1
 }
 exec 42>>"$SCRIPTS_LOCK"
-flock --wait 120 --exclusive 42 || lockfailed
+flock --timeout 120 --exclusive 42 || lockfailed
 
 # INSERT CRITICAL SECTION HERE
 
