@@ -23,6 +23,7 @@ PATHTMP=(
 	"$HOME/bin"
 	/usr/local/bin
 	/usr/local/sbin
+	/usr/lib/ccache/bin
 	/bin
 	/usr/bin
 	/sbin
@@ -57,9 +58,10 @@ export LC_ALL=C
 
 export BROWSER=firefox
 export EDITOR=joe
-export GZIP='-9'
 export FCEDIT=${EDITOR}
 export VISUAL=${EDITOR}
+export SYSTEMD_EDITOR=${EDITOR}
+export GZIP='-9'
 export HISTCONTROL=ignoreboth
 if [ ! -d "${HOME}/.histories" ]; then
 	mkdir "${HOME}/.histories"
@@ -73,7 +75,7 @@ export LESSCHARSET=iso8859
 if [ -d /usr/cluster/man ]; then
 	export MANPATH="${MANPATH}:/usr/cluster/man"
 fi
-export MOZ_DISABLE_PANGO=1
+#export MOZ_DISABLE_PANGO=1
 export PAGER=less
 export TMOUT=1800
 export TMPDIR="$HOME/tmp"
@@ -90,9 +92,6 @@ fi
 
 # Remove system /etc/bash_completion
 #complete -r
-if [ -f /etc/puppet/scripts/puppet-svn-bash-completion ]; then
-	source /etc/puppet/scripts/puppet-svn-bash-completion
-fi
 
 unalias -a
 alias cp='cp -i'
@@ -123,6 +122,7 @@ if type -P rpm >/dev/null; then
 	alias rpmarch='rpm -q --qf "%{n}-%{v}-%{r}.%{arch}\n"'
 fi
 alias rpmspecdate='date +"* %a %b %d %Y  ${FULLNAME} <${EMAIL}>"'
+alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
 shopt -s cdspell
 shopt -s checkhash
 shopt -s checkwinsize
@@ -146,5 +146,8 @@ umask 022
 ulimit -c unlimited
 
 cd "$HOME"
+. bin/compile-settings default
+export CCACHE_DIR=$HOME/tmp/ccache
+#mkdir -p "$CCACHE_DIR"
 
 # EOF
