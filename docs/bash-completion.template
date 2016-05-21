@@ -3,22 +3,25 @@ _FIXME_module()
 	local cur prev OPTS
 	COMPREPLY=()
 	cur="${COMP_WORDS[COMP_CWORD]}"
-	prev="${COMP_WORDS[COMP_CWORD-1]}"
+	prev="${COMP_WORDS[COMP_CWORD - 1]}"
 	case $prev in
 		'-f'|'--fixme')
-			COMPREPLY=( $(compgen -W "fixme" -- $cur) )
+			COMPREPLY=( $(compgen -W "fixme" -- "$cur") )
+			return 0
+			;;
+		'-h'|'--help'|'-V'|'--version')
 			return 0
 			;;
 	esac
 	case $cur in
 		-*)
-			OPTS="-f --fixme -V --version -h --help"
-			COMPREPLY=( $(compgen -W "${OPTS[*]}" -- $cur) )
+			OPTS="--fixme --version --help"
+			COMPREPLY=( $(compgen -W "${OPTS[*]}" -- "$cur") )
 			return 0
 			;;
 	esac
 	compopt -o filenames
-	COMPREPLY=( $(compgen -f -- $cur) )
+	COMPREPLY=( $(compgen -f -- "$cur") )
 	return 0
 }
 complete -F _FIXME_module FIXME
