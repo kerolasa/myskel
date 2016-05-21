@@ -1,3 +1,5 @@
 setxkbmap gb
-xrdb -merge $HOME/.Xdefaults 
-exec /usr/bin/startfluxbox
+setterm -blank 0 -powersave off -powerdown 0
+xset s off
+xrdb -merge "$HOME/.Xdefaults"
+exec /usr/bin/awesome
