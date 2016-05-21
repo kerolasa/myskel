@@ -1,5 +1,5 @@
 # XScreenSaver Preferences File
-# Written by xscreensaver-demo 5.12 for sake on Fri Aug 19 09:39:30 2011.
+# Written by xscreensaver-demo 5.34 for kerolasa on Sat May 21 11:18:47 2016.
 # http://www.jwz.org/xscreensaver/
 
 timeout:	0:02:00
@@ -24,7 +24,8 @@ fadeTicks:	20
 captureStderr:	True
 ignoreUninstalledPrograms:False
 font:		*-medium-r-*-140-*-m-*
-dpmsEnabled:	True
+dpmsEnabled:	False
+dpmsQuickOff:	False
 dpmsStandby:	0:10:00
 dpmsSuspend:	0:20:00
 dpmsOff:	0:30:00
@@ -33,7 +34,7 @@ grabVideoFrames:    False
 chooseRandomImages: False
 imageDirectory:	/tmp
 
-mode:		one
+mode:		blank
 selected:	129
 
 textMode:	date
@@ -241,16 +242,32 @@ programs:								      \
   GL: 				skytentacles -root			    \n\
   GL: 				rubikblocks -root			    \n\
 				electricsheep --root 1			    \n\
+  GL: 				companioncube -root			    \n\
+  GL: 				hilbert -root				    \n\
+  GL: 				tronbit -root				    \n\
+  GL: 				geodesic -root				    \n\
+				hexadrop -root				    \n\
+  GL: 				kaleidocycle -root			    \n\
+  GL: 				quasicrystal -root			    \n\
+  GL: 				unknownpleasures -root			    \n\
+				binaryring -root			    \n\
+  GL: 				cityflow -root				    \n\
+  GL: 				geodesicgears -root			    \n\
+  GL: 				projectiveplane -root			    \n\
+  GL: 				romanboy -root				    \n\
+				tessellimage -root			    \n\
+  GL: 				winduprobot -root			    \n\
+  GL: 				splitflap -root				    \n\
+				testx11 -root				    \n\
 
 
 pointerPollTime:    0:00:05
 pointerHysteresis:  10
 windowCreationTimeout:0:00:30
 initialDelay:	0:00:00
-sgiSaverExtension:  True
-xidleExtension:	True
 GetViewPortIsFullOfLies:False
 procInterrupts:	True
 xinputExtensionDev: True
 overlayStderr:	True
+authWarningSlack:   20
 

@@ -121,7 +121,8 @@
 
  -baud nnn	Set baud rate for terminal optimizations
 
- -columns nnn	Set no. screen columns
+-columns 74
+		Set no. screen columns
 
  -help		Start with help on
 

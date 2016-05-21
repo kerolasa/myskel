@@ -7,11 +7,11 @@ function myskel()
 }
 
 export FULLNAME='Sami Kerola'
-export NAME=$FULLNAME
+export NAME="$FULLNAME"
 export EMAIL='kerolasa@iki.fi'
 
-export USER=$(id -un)
-export LOGNAME="${USER}"
+export USER="$(id -un)"
+export LOGNAME="$USER"
 
 # Remove existing path, add all possible random directories where
 # commands are found on various systems.  Check the directories once
@@ -19,26 +19,26 @@ export LOGNAME="${USER}"
 # not access, symlinks, etc) entries.
 PATH=''
 PATHTMP=(
-	/home/src/util-linux
+	'/home/src/util-linux'
 	"$HOME/bin"
-	/usr/local/bin
-	/usr/local/sbin
-	/usr/lib/ccache/bin
-	/bin
-	/usr/bin
-	/sbin
-	/usr/sbin
-	/usr/java/jdk/bin
-	/usr/lib/java/bin
-	/usr/kerberos/bin
-	/usr/kerberos/sbin
-	/usr/bin/core_perl
-	/usr/X11R6/bin
-	/usr/gnu/bin
-	/opt/sfw/bin
-	/usr/proc/bin
-	/usr/openwin/bin
-	/usr/ucb
+	'/usr/local/bin'
+	'/usr/local/sbin'
+	'/usr/lib/ccache/bin'
+	'/bin'
+	'/usr/bin'
+	'/sbin'
+	'/usr/sbin'
+	'/usr/java/jdk/bin'
+	'/usr/lib/java/bin'
+	'/usr/kerberos/bin'
+	'/usr/kerberos/sbin'
+	'/usr/bin/core_perl'
+	'/usr/X11R6/bin'
+	'/usr/gnu/bin'
+	'/opt/sfw/bin'
+	'/usr/proc/bin'
+	'/usr/openwin/bin'
+	'/usr/ucb'
 )
 for I in "${PATHTMP[@]}"; do
 	if [ -d "$I" ] && [ ! -h "$I" ]; then
@@ -50,37 +50,36 @@ for I in "${PATHTMP[@]}"; do
 	fi
 done
 unset PATHTMP
+unset I
 
 #export LD_LIBRARY_PATH=
 #export LD_LIBRARY_PATH_64=
-export LANG=C
-export LC_ALL=C
+export LANG='C'
+export LC_ALL='C'
 
-export BROWSER=firefox
-export EDITOR=joe
-export FCEDIT=${EDITOR}
-export VISUAL=${EDITOR}
-export SYSTEMD_EDITOR=${EDITOR}
-export GZIP='-9'
-export HISTCONTROL=ignoreboth
-if [ ! -d "${HOME}/.histories" ]; then
-	mkdir "${HOME}/.histories"
+export BROWSER='firefox'
+export EDITOR='joe'
+export FCEDIT="$EDITOR"
+export VISUAL="$EDITOR"
+export SYSTEMD_EDITOR="$EDITOR"
+export HISTCONTROL='ignoreboth'
+if [ ! -d "$HOME/.histories" ]; then
+	mkdir "$HOME/.histories"
 fi
-export HISTFILE="${HOME}/.histories/${USER}@${HOSTNAME}"
-export HISTFILESIZE=100
-export HISTSIZE=100
-export JOETERM=vt100
-export LESSCHARSET=iso8859
+export HISTFILE="$HOME/.histories/${USER}@${HOSTNAME}"
+export HISTFILESIZE='10000'
+export HISTSIZE="$HISTFILESIZE"
+export JOETERM='vt100'
+export LESSCHARSET='iso8859'
 # Solaris cluster manuals
-if [ -d /usr/cluster/man ]; then
+if [ -d '/usr/cluster/man' ]; then
 	export MANPATH="${MANPATH}:/usr/cluster/man"
 fi
-#export MOZ_DISABLE_PANGO=1
-export PAGER=less
-export TMOUT=1800
+export PAGER='less'
+#export TMOUT='1800'
 export TMPDIR="$HOME/tmp"
-export cdspell=on
-export dotglob=on
+export cdspell='on'
+export dotglob='on'
 
 unset LS_COLORS
 
@@ -104,9 +103,9 @@ alias which='type -P'
 
 #http_proxy="proxy.example.com:1234"
 if [ "x" != "x$http_proxy" ]; then
-	HTTP_PROXY=$http_proxy
-	https_proxy=$http_proxy
-	HTTPS_PROXY=$http_proxy
+	HTTP_PROXY="$http_proxy"
+	https_proxy="$http_proxy"
+	HTTPS_PROXY="$http_proxy"
 	export http_proxy HTTP_PROXY https_proxy HTTPS_PROXY
 fi
 # The $http_proxy could come from /etc/profile keep it separate from
@@ -115,14 +114,13 @@ if [ "x" != "x$http_proxy" ]; then
 	alias links="links -http-proxy $http_proxy -https-proxy $http_proxy"
 fi
 
-if type -P rdesktop >/dev/null; then
-	alias rdesktop='rdesktop -g 95%'
-fi
-if type -P rpm >/dev/null; then
-	alias rpmarch='rpm -q --qf "%{n}-%{v}-%{r}.%{arch}\n"'
-fi
+#if type -P rdesktop >/dev/null; then
+#	alias rdesktop='rdesktop -g 95%'
+#fi
+#if type -P rpm >/dev/null; then
+#	alias rpmarch='rpm -q --qf "%{n}-%{v}-%{r}.%{arch}\n"'
+#fi
 alias rpmspecdate='date +"* %a %b %d %Y  ${FULLNAME} <${EMAIL}>"'
-alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
 shopt -s cdspell
 shopt -s checkhash
 shopt -s checkwinsize
@@ -147,7 +145,7 @@ ulimit -c unlimited
 
 cd "$HOME"
 . bin/compile-settings default
-export CCACHE_DIR=$HOME/tmp/ccache
+export CCACHE_DIR="$HOME/tmp/ccache"
 #mkdir -p "$CCACHE_DIR"
 
 # EOF
