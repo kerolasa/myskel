@@ -14,7 +14,7 @@ set -u
 set -o pipefail
 
 msg() {
-	echo "${SCRIPT_INVOCATION_SHORT_NAME}: ${@}"
+	echo "${SCRIPT_INVOCATION_SHORT_NAME}: ${*}"
 }
 
 usage() {
@@ -22,7 +22,7 @@ usage() {
 	echo " ${0} [-h]"
 	echo ""
 	echo " -h   display this help and exit"
-	exit ${1}
+	exit "${1}"
 }
 
 while getopts h OPTIONS; do
@@ -53,7 +53,7 @@ for I in $(ifconfig -a |
 		}
 	}'
 ); do
-	getent hosts ${I} | awk '{printf "%-40s%s\n", $1, $2; exit}'
+	getent hosts "${I}" | awk '{printf "%-40s%s\n", $1, $2; exit}'
 done
 
 exit 0

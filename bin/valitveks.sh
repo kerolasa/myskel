@@ -8,7 +8,7 @@ trap 'echo "${0##*/}: exit on error"; exit 1' ERR
 
 for I in "$@"; do
 	FILE="${I##*/}"
-	FILE=$(echo $FILE | tr ' 	' '__')
+	FILE=$(echo "$FILE" | tr ' 	' '__')
 	if [ "${I##*/}" = "$FILE" ]; then
 		continue
 	fi

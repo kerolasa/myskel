@@ -18,8 +18,8 @@ retval=0
 
 msg() {
 	echo "$SCRIPT_INVOCATION_SHORT_NAME: $1"
-	if [ $2 -ne 0 ]; then
-		exit $2
+	if [ "$2" -ne 0 ]; then
+		exit "$2"
 	fi
 }
 usage() {
@@ -28,7 +28,7 @@ usage() {
 	echo ""
 	echo " -b <binary>  path to the executable that dropped the core"
 	echo " -h           display this help and exit"
-	exit $1
+	exit "$1"
 }
 
 binimg=''

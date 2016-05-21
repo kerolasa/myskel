@@ -24,7 +24,7 @@ usage() {
 	echo ' -v   verbose, explain what is being done'
 	echo ' -V   output version information and exit'
 	echo ' -h   display this help and exit'
-	exit $1
+	exit "$1"
 }
 
 while getopts vhV OPTIONS; do
@@ -53,7 +53,7 @@ if [ ! -f "$1" ]; then
 	exit 1
 fi
 
-PSFILE=$(mktemp $SCRIPT_INVOCATION_SHORT_NAME.XXXXXXXX.ps)
+PSFILE=$(mktemp "$SCRIPT_INVOCATION_SHORT_NAME.XXXXXXXX.ps")
 trap "rm -f $PSFILE" 0
 
 for I in "$@"; do

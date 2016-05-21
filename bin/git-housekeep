@@ -18,7 +18,7 @@ set -u
 set -o pipefail
 
 msg() {
-	echo "${SCRIPT_INVOCATION_SHORT_NAME}: ${@}"
+	echo "${SCRIPT_INVOCATION_SHORT_NAME}: ${*}"
 }
 
 usage() {
@@ -30,7 +30,7 @@ usage() {
 	echo " -r   prune remote branches"
 	echo " -e   perform expensive repack (almost never needed)"
 	echo " -h   display this help and exit"
-	exit ${1}
+	exit "${1}"
 }
 
 MERGED=false
@@ -67,13 +67,13 @@ fi
 
 if ${MERGED}; then
 	for I in $(git branch --merged | grep -Ev '(\*|master)'); do
-		git branch -d $I
+		git branch -d "$I"
 	done
 fi
 if ${REMOTE} || ${EXPENSIVE}; then
 	for I in $(git remote); do
 		echo "pruning: ${I}"
-		git remote prune ${I}
+		git remote prune "${I}"
 	done
 fi
 if ${LOCAL} || ${EXPENSIVE}; then
