@@ -13,8 +13,6 @@ tarfile: clean
 		.bashrc \
 		.clusterssh/config \
 		.config/user-dirs.conf \
-		.fluxbox/init \
-		.fluxbox/startup \
 		.joerc
 	chmod -R go-rwx .
 	tar czf myskel.tgz `$(FILE_LIST)`
