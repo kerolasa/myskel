@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for I in *; do
+	if [ ! -d "$I/.git" ]; then
+		continue
+	fi
+	echo "=== $I ==="
+	git -C $I "$@"
+done
+
+exit 0
