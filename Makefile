@@ -13,7 +13,8 @@ tarfile: clean
 		.bashrc \
 		.clusterssh/config \
 		.config/user-dirs.conf \
-		.joerc
+		.joerc \
+		.msmtprc
 	chmod -R go-rwx .
 	tar czf myskel.tgz `$(FILE_LIST)`
 	@echo "Extract the 'myskel.tgz' to your home directory."
