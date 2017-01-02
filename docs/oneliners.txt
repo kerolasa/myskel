@@ -53,3 +53,4 @@ history |
  nl |
  head -n10
 ---------
+pngcrush -rem allb -brute -reduce orig.png new.png
