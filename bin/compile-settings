@@ -20,7 +20,8 @@ case "$1" in
 	asan)
 		export CC=clang
 		export CXX=clang++
-		export CFLAGS='-O1 -g -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined -fsanitize=integer'
+#		export CFLAGS='-O1 -g -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined -fsanitize=integer'
+		export CFLAGS='-fsanitize=address -ggdb'
 		export ASAN_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer
 		;;
 	coverage)
@@ -37,20 +38,21 @@ case "$1" in
 		;;
 	smatch)
 		export CC=/home/src/smatch/cgcc
-		export CFLAGS=''
+		export PATH="/home/src/smatch:$PATH"
+		export CFLAGS="-Wsparse-all"
+# --spammy"
 		;;
 	perform)
 		export CFLAGS="-O3 -Ofast"
 		export CXXFLAGS="$CFLAGS"
 		;;
-	smatch)
-		export CFLAGS="-Wsparse-all --spammy"
-		export CHECK='smatch'
-		export CC=cgcc
-		;;
 	afl)
 		export CFLAGS="-O -g -ggdb -fno-omit-frame-pointer"
 		export CC=afl-gcc
+		;;
+	tcc)
+		export CFLAGS="-O2"
+		export CC=tcc
 		;;
 	default)
 		;;
