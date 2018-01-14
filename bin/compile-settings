@@ -3,19 +3,25 @@ export GNULIB_TOOL=/home/src/gnulib/gnulib-tool
 export GNULIB_SRCDIR=/home/src/gnulib
 export CC=gcc
 export CXX=g++
-export CFLAGS="-O -g -ggdb -Wall -Wextra -fno-omit-frame-pointer -Wshadow -D_FORTIFY_SOURCE=2 -fstack-protector-all -Wno-deprecated  -Wno-deprecated-declarations -Wnull-dereference"
+export CFLAGS="-Wstringop-overflow=3 -O -g -ggdb -Wall -Wextra -fno-omit-frame-pointer -Wshadow -D_FORTIFY_SOURCE=2 -fstack-protector-all -Wno-deprecated  -Wno-deprecated-declarations -Wnull-dereference"
 export LD=ld.gold
 
 case "$1" in
 	clang)
 		export CC=clang
 		export CXX=clang++
-		export CFLAGS="-O0 -g -ggdb -Wall -Wextra -pedantic -fno-omit-frame-pointer"
+		export CFLAGS="-O0 -g -ggdb -Wall -Wextra -pedantic -fno-omit-frame-pointer -fsanitize=undefined -Wunused"
 		;;
 	clangquiet)
 		export CC=clang
 		export CXX=clang++
 		export CFLAGS="-O2 -g -ggdb"
+		;;
+	clang-wall)
+		export CC=clang
+		export CXX=clang++
+		export CFLAGS="-O2 -g -ggdb -Wall -Wextra -pedantic -fno-omit-frame-pointer -fsanitize=undefined -Wunused -fsanitize=alignment -fsanitize=bool -fsanitize=bounds -fsanitize=enum -fsanitize=float-cast-overflow -fsanitize=float-divide-by-zero -fsanitize=function -fsanitize=integer-divide-by-zero -fsanitize=nonnull-attribute -fsanitize=null -fsanitize=nullability-arg -fsanitize=nullability-assign -fsanitize=nullability-return -fsanitize=object-size -fsanitize=pointer-overflow -fsanitize=returns-nonnull-attribute -fsanitize=shift -fsanitize=signed-integer-overflow -fsanitize=unreachable -fsanitize=unsigned-integer-overflow -fsanitize=vla-bound"
+		export LD=clang++
 		;;
 	asan)
 		export CC=clang
@@ -25,13 +31,13 @@ case "$1" in
 		export ASAN_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer
 		;;
 	coverage)
-		export CFLAGS="-O0 -g -ggdb -fprofile-arcs -ftest-coverage"
+		export CFLAGS="-O0 -g -ggdb -fprofile-arcs -ftest-coverage -fPIC"
 		;;
 	wall)
-		export CFLAGS="--param=ssp-buffer-size=4 -O -Wall -Werror=format-security -Werror=sequence-point -Wextra -Wformat -Wformat-security -Wmissing-parameter-type -Wno-missing-field-initializers -Wredundant-decls -Wsign-compare -Wstrict-overflow -Wswitch-default -Wswitch-enum -Wsync-nand -Wtype-limits -Wuninitialized -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused-parameter -Wunused-result -fno-common -fstack-protector -g -ggdb -pedantic -D_FORTIFY_SOURCE=2"
+		export CFLAGS="-Wmaybe-uninitialized -Wdiscarded-qualifiers -Wdiscarded-array-qualifiers -Wc99-c11-compat --param=ssp-buffer-size=4 -O -Wall -Werror=format-security -Werror=sequence-point -Wextra -Wformat -Wformat-security -Wmissing-parameter-type -Wno-missing-field-initializers -Wredundant-decls -Wsign-compare -Wstrict-overflow -Wswitch-default -Wswitch-enum -Wsync-nand -Wtype-limits -Wuninitialized -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused -Wcast-qual -fno-common -fstack-protector -g -ggdb -pedantic -D_FORTIFY_SOURCE=2"
 		;;
 	wall2)
-		export CFLAGS="-O -fPIC -D_FORTIFY_SOURCE -W -Wabi -DANOTHER_BRICK_IN_THE -Wall -Wattributes -Wbad-function-cast -Wbuiltin-macro-redefined -Wcast-align -Wchar-subscripts -Wcoverage-mismatch -Wcpp -Wdeclaration-after-statement -Wdeprecated -Wdeprecated-declarations -Wdisabled-optimization -Wdiv-by-zero -Wendif-labels -Wextra -Wfloat-equal -Wformat-contains-nul -Wformat-extra-args -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wformat-zero-length -Wformat=2 -Winit-self -Winvalid-pch -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wmissing-noreturn -Wmissing-prototypes -Wmultichar -Wnested-externs -Wno-format-nonliteral -Wno-inline -Wno-logical-op -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-sign-compare -Wno-unused-parameter -Wno-unused-result -Wnormalized=nfc -Wold-style-definition -Woverflow -Woverlength-strings -Wpacked -Wpacked-bitfield-compat -Wpointer-arith -Wpointer-to-int-cast -Wpragmas -Wredundant-decls -Wshadow -Wsign-compare -Wstrict-aliasing -Wstrict-aliasing=2 -Wstrict-prototypes -Wsuggest-attribute=noreturn -Wsync-nand -Wtrampolines -Wtype-limits -Wundef -Wuninitialized -Wunknown-pragmas -Wunused -Wunused-local-typedefs -Wvla -Wvolatile-register-var -Wwrite-strings -fdata-sections -fdiagnostics-show-option -ffunction-sections -fno-common -funit-at-a-time -fvisibility=hidden -pipe"
+		export CFLAGS="-Werror=implicit-function-declaration -O -fPIC -D_FORTIFY_SOURCE -W -Wabi -DANOTHER_BRICK_IN_THE -Wall -Wattributes -Wbad-function-cast -Wbuiltin-macro-redefined -Wcast-align -Wchar-subscripts -Wcoverage-mismatch -Wcpp -Wdeclaration-after-statement -Wdeprecated -Wdeprecated-declarations -Wdisabled-optimization -Wdiv-by-zero -Wendif-labels -Wextra -Wfloat-equal -Wformat-contains-nul -Wformat-extra-args -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wformat-zero-length -Wformat=2 -Winit-self -Winvalid-pch -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wmissing-noreturn -Wmissing-prototypes -Wmultichar -Wnested-externs -Wno-format-nonliteral -Wno-inline -Wno-logical-op -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-sign-compare -Wno-unused-parameter -Wno-unused-result -Wnormalized=nfc -Wold-style-definition -Woverflow -Woverlength-strings -Wpacked -Wpacked-bitfield-compat -Wpointer-arith -Wpointer-to-int-cast -Wpragmas -Wredundant-decls -Wshadow -Wsign-compare -Wstrict-aliasing -Wstrict-aliasing=2 -Wstrict-prototypes -Wsuggest-attribute=noreturn -Wsync-nand -Wtrampolines -Wtype-limits -Wundef -Wuninitialized -Wunknown-pragmas -Wunused -Wunused-local-typedefs -Wvla -Wvolatile-register-var -Wwrite-strings -fdata-sections -fdiagnostics-show-option -ffunction-sections -fno-common -funit-at-a-time -fvisibility=hidden -pipe"
 		;;
 	profile)
 		export CFLAGS="-O0 -g -ggdb -pg -fno-omit-frame-pointer"
@@ -47,8 +53,9 @@ case "$1" in
 		export CXXFLAGS="$CFLAGS"
 		;;
 	afl)
-		export CFLAGS="-O -g -ggdb -fno-omit-frame-pointer"
-		export CC=afl-gcc
+		export CFLAGS="-g -ggdb -fno-omit-frame-pointer"
+		export CC=afl-clang-fast
+		export CXX=afl-clang-fast++
 		;;
 	tcc)
 		export CFLAGS="-O2"
@@ -65,6 +72,7 @@ case "$1" in
 		unset CXXFLAGS
 		unset GNULIB_SRCDIR
 		unset GNULIB_TOOL
+		echo gone
 		;;
 	*)
 		echo "no idea"
