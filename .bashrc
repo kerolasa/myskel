@@ -54,8 +54,8 @@ unset I
 
 #export LD_LIBRARY_PATH=
 #export LD_LIBRARY_PATH_64=
-export LANG='C'
-export LC_ALL='C'
+export LANG='en_GB.UTF-8'
+export LC_ALL='en_GB.UTF-8'
 
 export BROWSER='firefox'
 export EDITOR='joe'
@@ -145,7 +145,9 @@ ulimit -c unlimited
 
 cd "$HOME"
 . bin/compile-settings default
-export CCACHE_DIR="$HOME/tmp/ccache"
+export CCACHE_DIR='/home/src/ccache'
 #mkdir -p "$CCACHE_DIR"
+
+. /usr/share/bash-completion/completions/pass
 
 # EOF
