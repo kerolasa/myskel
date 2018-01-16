@@ -69,8 +69,8 @@ fi
 export HISTFILE="$HOME/.histories/${USER}@${HOSTNAME}"
 export HISTFILESIZE='10000'
 export HISTSIZE="$HISTFILESIZE"
-export JOETERM='vt100'
-export LESSCHARSET='iso8859'
+export JOETERM='xterm-256color'
+export LESSCHARSET='utf-8'
 # Solaris cluster manuals
 if [ -d '/usr/cluster/man' ]; then
 	export MANPATH="${MANPATH}:/usr/cluster/man"
@@ -96,10 +96,11 @@ unalias -a
 alias cp='cp -i'
 alias less='less -Qin'
 alias ls='ls -Fb'
-alias more='more -dp'
+#alias more='more -dp'
 alias mv='mv -i'
 alias rm='rm -i'
 alias which='type -P'
+alias mirage='feh --scale-down --auto-zoom'
 
 #http_proxy="proxy.example.com:1234"
 if [ "x" != "x$http_proxy" ]; then

@@ -1,5 +1,5 @@
-XTerm*faceName: Inconsolata
-XTerm*faceSize: 12
+xterm*faceName: DejaVu Sans Mono Book
+xterm*faceSize: 11
 XTerm.termName: xterm-256color
 
 xterm_color*background: Black
@@ -27,5 +27,5 @@ xterm*scrollTtyOutput: off
 xterm*VisualBell: true
 
 XTerm*selectToClipboard: True
-
-XTerm.vt100.locale: true
+xterm*utf8: 2
+XTerm.*.locale: true
